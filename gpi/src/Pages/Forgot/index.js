@@ -18,7 +18,8 @@ function Forgot(){
                   <div className="p-5">
                     <div className="text-center">
                       <h4 className="text-dark mb-2">¿Olvidastes tu contraseña?</h4>
-                      <p className="mb-4">Lo comprendemos, a veces las cosas suceden. ¡Sólo ingresa tu correo electrónico abajo y te enviaremos un vínculo para que puedas cambiar tu contraseña!</p>
+                      <p className="mb-4">Lo comprendemos, a veces las cosas suceden. 
+                      ¡Sólo ingresa tu correo electrónico abajo y te enviaremos un vínculo para que puedas cambiar tu contraseña!</p>
                     </div>
                     <form className="user">
                       <div className="form-group">

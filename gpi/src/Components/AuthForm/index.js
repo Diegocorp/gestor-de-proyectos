@@ -77,8 +77,14 @@ const AuthForm = ({ setGuestMode }) => {
           <div className="form-group">
               <div className="custom-control custom-checkbox small">
                   <div className="form-check">
-                    <input className="form-check-input custom-control-input" type="checkbox" id="formCheck-1"/>
-                    <label className="form-check-label custom-control-label" htmlFor="formCheck-1">Recordar sesion</label>
+                    <input 
+                      className="form-check-input custom-control-input" 
+                      type="checkbox" 
+                      id="formCheck-1"
+                    />
+                    <label 
+                      className="form-check-label custom-control-label" 
+                      htmlFor="formCheck-1">Recordar sesion</label>
                   </div>
               </div>
           </div>
@@ -90,8 +96,12 @@ const AuthForm = ({ setGuestMode }) => {
           </button>
           <hr/>
         </form>
-        <div className="text-center"><Link className="small" to="/forgot">¿Olvidaste tu contraseña?</Link></div>
-        <div className="text-center"><Link className="small" to="/register">Crear una cuenta</Link></div>
+        <div className="text-center">
+          <Link className="small" to="/forgot">¿Olvidaste tu contraseña?</Link>
+        </div>
+        <div className="text-center">
+          <Link className="small" to="/register">Crear una cuenta</Link>
+        </div>
       </div>
     </div>
   )

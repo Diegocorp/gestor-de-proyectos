@@ -26,28 +26,29 @@ const CustomDropdown = ({ logout, suggestionPage, userPage, guestMode }) => {
     userFullName = `${user.firstName} ${user.lastName}`;
   }
 
-  return(
-  <>
-    <Dropdown className="bg-white">
-      <Dropdown.Toggle as={CustomToggle}>
-        <span className="d-none d-lg-inline text-gray-600 small">
-          { userFullName || "Invitado"}
-        </span>
-        <img 
-          className="border rounded-circle img-profile ml-3" 
-          id="usrImg" 
-          src={user.imageURL || TecLogo} 
-          alt="Tec"
-        />
-      </Dropdown.Toggle>
-      <Dropdown.Menu className="rounded p-0 mt-2">
-        {guestMode ? null : userPage}
-        {suggestionPage}
-        {logout}
-      </Dropdown.Menu>
-    </Dropdown>{''}
-  </>
-  )
+  return (
+    <>
+      <Dropdown className="bg-white">
+        <Dropdown.Toggle as={CustomToggle}>
+          <span className="d-none d-lg-inline text-gray-600 small">
+            {userFullName || "Invitado"}
+          </span>
+          <img
+            className="border rounded-circle img-profile ml-3"
+            id="usrImg"
+            src={user.imageURL || TecLogo}
+            alt="profile"
+          />
+        </Dropdown.Toggle>
+        <Dropdown.Menu className="rounded p-0 mt-2">
+          {guestMode ? null : userPage}
+          {suggestionPage}
+          {logout}
+        </Dropdown.Menu>
+      </Dropdown>
+      {""}
+    </>
+  );
 };
 
 export default CustomDropdown;

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../Utils/UserContext";
-import image from "../../Assets/img/tecnm-1.png";
+import "./styles.css";
 import apis from "../../API";
 
 const UserPage = (props) => {
@@ -87,7 +87,7 @@ const UserPage = (props) => {
                 <img
                   id="preview"
                   className="rounded-circle mb-3 mt-4"
-                  src={user.imageURL || image}
+                  src={user.imageURL}
                   width="160"
                   height="160"
                   alt="user profile"
