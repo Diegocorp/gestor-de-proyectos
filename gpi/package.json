@@ -32,7 +32,7 @@
   },
   "scripts": {
     "start-client": "react-scripts start",
-    "build": "react-scripts build && (cd ../gpi-server && npm install)",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start": "concurrently \"cd ../gpi-server && nodemon index.js\"  \"cd ../gpi && npm run start-client\""

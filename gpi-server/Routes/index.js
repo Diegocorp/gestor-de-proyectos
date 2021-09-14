@@ -31,7 +31,6 @@ router.get("/:userName", auth, async (req, res) => {
     res.send({ message: "Error en Fetching del usuario..." });
   }
 });
-
 //user profile image upload and fetch
 router.post(
   "/upload/users/pictures/",

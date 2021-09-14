@@ -35,35 +35,6 @@ createUser = async (req, res) => {
         user,
       });
     });
-
-  /*   const body = req.body;
-
-  if(!body){
-    return res.status(404).json({
-      success: false,
-      error: "Se debe ingresar un usuario."
-    });
-  }
-
-  const user = new User(body);
-
-  if(!user){
-    return res.status(404).json({ status: false, error: err });
-  }
-
-  await user.save()
-    .then(() => {
-      return res.status(201).json({
-        success: true,
-        id: user._id,
-        message: 'User created.'
-      })
-    }).catch(error => {
-      return res.status(400).json({
-        error,
-        message: 'User not created. Data received: ', user
-      })
-    }); */
 };
 
 updateUser = async (req, res) => {
