@@ -59,6 +59,10 @@ const newProyectSchema = new Schema({
   projectFileName: {
     type: String,
   },
+  creatorID: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = model("Proyect", newProyectSchema);

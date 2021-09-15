@@ -8,6 +8,7 @@ const newUserSchema = new Schema({
   },
   email: {
     type: String,
+    unique: true,
     required: true,
   },
   firstName: {
@@ -23,8 +24,9 @@ const newUserSchema = new Schema({
     required: true,
   },
   employeeNumber: {
-    type: String,
+    type: Number,
     required: true,
+    unique: true,
   },
   password: {
     type: String,

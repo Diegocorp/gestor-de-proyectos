@@ -1,88 +1,107 @@
-import React from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import Table from 'react-bootstrap/Table';
-import { 
-  useTable, 
-  usePagination, 
-  useFilters, 
-  useGlobalFilter, 
-  useAsyncDebounce 
-} from 'react-table';
-import { matchSorter } from 'match-sorter';
-import './styles.css';
-  
+import React from "react";
+import { useHistory, useRouteMatch } from "react-router-dom";
+import Table from "react-bootstrap/Table";
+import {
+  useTable,
+  usePagination,
+  useFilters,
+  useGlobalFilter,
+  useAsyncDebounce,
+} from "react-table";
+import { matchSorter } from "match-sorter";
+import "./styles.css";
+
 function GlobalFilter({
   preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
 }) {
-  const count = preGlobalFilteredRows.length
-  const [value, setValue] = React.useState(globalFilter)
-  const onChange = useAsyncDebounce(value => {
-    setGlobalFilter(value || undefined)
-  }, 200)
+  const count = preGlobalFilteredRows.length;
+  const [value, setValue] = React.useState(globalFilter);
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
 
   return (
     <span className="d-flex">
       <div className="input-group input-group mb-3">
-        <div className="input-group-prepend">
-          <span 
-          className="input-group-text bg-transparent border-white" 
-          id="inputGroup-sizing-sm"
-          >Buscar:</span>
+        <div className="input-group-prepend form-group">
+          <span
+            className="input-group-text bg-transparent border-white"
+            id="inputGroup-sizing-sm"
+          >
+            Buscar:
+          </span>
         </div>
-        <input 
-          type="text" 
-          className="form-control" 
-          aria-label="Small" 
+        <input
+          type="text"
+          className="form-control border border-primary rounded"
+          aria-label="Small"
           aria-describedby="inputGroup-sizing-sm"
           value={value || ""}
-          onChange={e => {
+          onChange={(e) => {
             setValue(e.target.value);
             onChange(e.target.value);
           }}
           placeholder={`${count} records...`}
           style={{
-            fontSize: '1.1rem',
-            border: '0',
+            fontSize: "1.1rem",
+            border: "0",
           }}
         />
       </div>
     </span>
-  )
+  );
+}
+
+function CreatorFilter({ toggler }) {
+  return (
+    <span className="d-flex">
+      <div className="input-group mb-3 mr-3">
+        <div className="input-group-prepend">
+          <button
+            className="btn btn-outline-primary text-capitalize"
+            style={{ height: "45px" }}
+            onClick={() => toggler(() => true)}
+          >
+            Mis Proyectos
+          </button>
+        </div>
+      </div>
+    </span>
+  );
 }
 
 function DefaultColumnFilter({
   column: { filterValue, preFilteredRows, setFilter },
 }) {
-  const count = preFilteredRows.length
+  const count = preFilteredRows.length;
 
   return (
     <input
-      style={{display: 'none'}}
-      value={filterValue || ''}
-      onChange={e => {
-        setFilter(e.target.value || undefined)
+      style={{ display: "none" }}
+      value={filterValue || ""}
+      onChange={(e) => {
+        setFilter(e.target.value || undefined);
       }}
       placeholder={`Search ${count} records...`}
     />
-  )
+  );
 }
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
-  return matchSorter(rows, filterValue, { keys: [row => row.values[id]] })
+  return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
 }
 
-fuzzyTextFilterFn.autoRemove = val => !val
+fuzzyTextFilterFn.autoRemove = (val) => !val;
 
-const CustomTable = ({projectsData}) => {
-
+const CustomTable = ({ projectsData, setToggleUserProjects }) => {
   let { url } = useRouteMatch();
   const history = useHistory();
 
   const handleRowClick = async (id) => {
     history.push(`${url}/${id}`);
-  }
+  };
 
   const filterTypes = React.useMemo(
     () => ({
@@ -91,79 +110,84 @@ const CustomTable = ({projectsData}) => {
       // Or, override the default text filter to use
       // "startWith"
       text: (rows, id, filterValue) => {
-        return rows.filter(row => {
-          const rowValue = row.values[id]
+        return rows.filter((row) => {
+          const rowValue = row.values[id];
           return rowValue !== undefined
             ? String(rowValue)
                 .toLowerCase()
                 .startsWith(String(filterValue).toLowerCase())
-            : true
-        })
+            : true;
+        });
       },
     }),
     []
-  )
+  );
 
-  const data = React.useMemo(() => 
-  Object.keys(projectsData).map((key, index) => ({
-    proyectName: projectsData[key].proyectName,
-    startDate: projectsData[key].startDate,
-    typeProyect: projectsData[key].typeProyect,
-    enterpriseProject: projectsData[key].enterpriseProject,
-    objectiveProject: projectsData[key].objectiveProject,
-    statusProject: projectsData[key].statusProject,
-    _id: projectsData[key]._id
-  })),
-  [projectsData]
-)
+  const data = React.useMemo(
+    () =>
+      Object.keys(projectsData).map((key, index) => ({
+        proyectName: projectsData[key].proyectName,
+        startDate: projectsData[key].startDate,
+        typeProyect: projectsData[key].typeProyect,
+        enterpriseProject: projectsData[key].enterpriseProject,
+        objectiveProject: projectsData[key].objectiveProject,
+        statusProject: projectsData[key].statusProject,
+        _id: projectsData[key]._id,
+      })),
+    [projectsData]
+  );
 
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Proyecto',
-        accessor: 'proyectName',
-        Cell: row => (
-          <div style={{ textAlign: "left", maxWidth: "13em", minWidth: "13em" }}>{row.value}</div>
+        Header: "Proyecto",
+        accessor: "proyectName",
+        Cell: (row) => (
+          <div
+            style={{ textAlign: "left", maxWidth: "13em", minWidth: "13em" }}
+          >
+            {row.value}
+          </div>
         ),
       },
       {
-        Header: 'Fecha De Inicio',
-        accessor: 'startDate',
+        Header: "Fecha De Inicio",
+        accessor: "startDate",
       },
       {
-        Header: 'Tipo De Proyecto',
-        accessor: 'typeProyect',
+        Header: "Tipo De Proyecto",
+        accessor: "typeProyect",
       },
       {
-        Header: 'Empresa',
-        accessor: 'enterpriseProject',
-        Cell: row => (
+        Header: "Empresa",
+        accessor: "enterpriseProject",
+        Cell: (row) => (
           <div style={{ maxWidth: "10em", minWidth: "10em" }}>{row.value}</div>
         ),
       },
       {
-        Header: 'Objetivo',
-        accessor: 'objectiveProject',
+        Header: "Objetivo",
+        accessor: "objectiveProject",
       },
       {
-        Header: 'Estatus',
-        accessor: 'statusProject',
+        Header: "Estatus",
+        accessor: "statusProject",
       },
       {
-        Header: 'ID',
-        accessor: '_id',
-        show: false
-      }
+        Header: "ID",
+        accessor: "_id",
+        show: false,
+      },
     ],
     []
-  )
+  );
 
   const defaultColumn = React.useMemo(
     () => ({
       Filter: DefaultColumnFilter,
     }),
     []
-  )
+  );
 
   const {
     getTableProps,
@@ -182,38 +206,38 @@ const CustomTable = ({projectsData}) => {
     preGlobalFilteredRows,
     setGlobalFilter,
     state: { pageIndex, pageSize },
-    state
+    state,
   } = useTable(
-    { 
-      columns, 
-      data, 
+    {
+      columns,
+      data,
       defaultColumn,
       filterTypes,
-      initialState: {hiddenColumns: "_id", pageIndex: 0, }
+      initialState: { hiddenColumns: "_id", pageIndex: 0 },
     },
     useFilters,
     useGlobalFilter,
-    usePagination,
-  )
+    usePagination
+  );
 
   return (
-    <div 
-      id="table__responsive" 
-      className="table-responsive table h-100" 
-      style={ ({paddingBottom: "4em", overflowX: "scroll"})}
-      >
+    <div
+      id="table__responsive"
+      className="table-responsive table h-100"
+      style={{ paddingBottom: "4em", overflowX: "scroll" }}
+    >
       <span className="d-flex justify-content-sm-between">
         <div className="pagination">
           <span className="pt-2">Mostrar </span>
           <select
-            style={{margin: "0 .5em", width: "4em"}}
-            className="custom-select"
+            style={{ margin: "0 .5em", width: "4em" }}
+            className="custom-select border border-primary"
             value={pageSize}
-            onChange={e => {
-              setPageSize(Number(e.target.value))
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
             }}
           >
-            {[10, 20, 30, 40, 50].map(pageSize => (
+            {[10, 20, 30, 40, 50].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 {pageSize}
               </option>
@@ -226,60 +250,83 @@ const CustomTable = ({projectsData}) => {
           globalFilter={state.globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
+        <CreatorFilter toggler={setToggleUserProjects} />
       </span>
-      <Table {...getTableProps()} className="display table-hover table table-striped table-bordered ">
-      
+      <Table
+        {...getTableProps()}
+        className="display table-hover table table-striped table-bordered "
+      >
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th
-                  {...column.getHeaderProps()}
-                >
-                  {column.render('Header')}
-                  <div>{column.canFilter ? column.render('Filter') : null}</div>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>
+                  {column.render("Header")}
+                  <div>{column.canFilter ? column.render("Filter") : null}</div>
                 </th>
               ))}
             </tr>
           ))}
-          <tr>
-            </tr>
+          <tr></tr>
         </thead>
         <tbody {...getTableBodyProps()}>
-        {page.map((row, i) => {
-          prepareRow(row)
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map(cell => {
-                return <td {...cell.getCellProps()} onClick={() => handleRowClick(row.values._id)}>{cell.render('Cell')}</td>
-              })}
-            </tr>
-          )
-        })}
+          {page.map((row, i) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <td
+                      {...cell.getCellProps()}
+                      onClick={() => handleRowClick(row.values._id)}
+                    >
+                      {cell.render("Cell")}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </Table>
       <div className="mb-4">
-        <button className="btn btn-sm rounded-sm btn-outline-primary" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {'<<'}
-        </button>{' '}
-        <button className="btn btn-sm rounded-sm btn-outline-primary" onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'<'}
-        </button>{' '}
-        <button className="btn btn-sm rounded-sm btn-outline-primary" onClick={() => nextPage()} disabled={!canNextPage}>
-          {'>'}
-        </button>{' '}
-        <button className="btn btn-sm rounded-sm btn-outline-primary" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {'>>'}
-        </button>{' '}
+        <button
+          className="btn btn-sm rounded-sm btn-outline-primary"
+          onClick={() => gotoPage(0)}
+          disabled={!canPreviousPage}
+        >
+          {"<<"}
+        </button>{" "}
+        <button
+          className="btn btn-sm rounded-sm btn-outline-primary"
+          onClick={() => previousPage()}
+          disabled={!canPreviousPage}
+        >
+          {"<"}
+        </button>{" "}
+        <button
+          className="btn btn-sm rounded-sm btn-outline-primary"
+          onClick={() => nextPage()}
+          disabled={!canNextPage}
+        >
+          {">"}
+        </button>{" "}
+        <button
+          className="btn btn-sm rounded-sm btn-outline-primary"
+          onClick={() => gotoPage(pageCount - 1)}
+          disabled={!canNextPage}
+        >
+          {">>"}
+        </button>{" "}
         <span>
-          Página{' '}
+          Página{" "}
           <strong>
             {pageIndex + 1} de {pageOptions.length}
-          </strong>{' '}
+          </strong>{" "}
         </span>
       </div>
     </div>
-  )
+  );
 };
 
 export default CustomTable;

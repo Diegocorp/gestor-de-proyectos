@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./styles.css";
 import AddStudent from "../../Components/AddStudent";
 import AddTeacher from "../../Components/AddTeacher";
@@ -7,6 +7,7 @@ import AddDoc from "../../Components/AddDoc";
 import { useParams } from "react-router-dom";
 import "react-notifications-component/dist/theme.css";
 import { store } from "react-notifications-component";
+import { UserContext } from "../../Utils/UserContext";
 
 const CreateProject = ({
   title,
@@ -16,6 +17,7 @@ const CreateProject = ({
   edit,
 }) => {
   let { id } = useParams();
+  const { user } = useContext(UserContext);
   const [dataObject, setDataObject] = useState({
     proyectName: "",
     releaseDate: "",
@@ -99,6 +101,10 @@ const CreateProject = ({
       formData.append("document", documentUpload);
       if (!edit) {
         //project info upload to database then upload document
+        setDataObject((prevState) => ({
+          ...prevState,
+          creatorID: user.employeeNumber,
+        }));
         apis
           .postProject(dataObject)
           .then((response) => {
@@ -119,34 +125,44 @@ const CreateProject = ({
                 onScreen: true,
               },
             });
-          }
-        );
-      }else {
-        await apis.putProject(dataObject).then(() => {          
-          if ((projectData.projectFileName !== dataObject.projectFileName) && projectData.projectFileName){ 
-            apis.deleteDocument({_id: id, projectFileName: projectData.projectFileName})            
-          }                  
-        }).then(() => {
-          apis.postDocument({ id: id, formData })
-        }).then(() => {
-          store.addNotification({
-            title: "Proyecto actualizado con exito",
-            message: "El proyecto se ha actualizado con exito en la base de datos",
-            type: "info",
-            insert: "top",
-            container: "top-right",
-            animationIn: ["animate__animated", "animate__fadeIn"],
-            animationOut: ["animate__animated", "animate__fadeOut"],
-            dismiss: {
-              duration: 3500,
-              onScreen: true,
-            },
           });
-        })
+      } else {
+        await apis
+          .putProject(dataObject)
+          .then(() => {
+            if (
+              projectData.projectFileName !== dataObject.projectFileName &&
+              projectData.projectFileName
+            ) {
+              apis.deleteDocument({
+                _id: id,
+                projectFileName: projectData.projectFileName,
+              });
+            }
+          })
+          .then(() => {
+            apis.postDocument({ id: id, formData });
+          })
+          .then(() => {
+            store.addNotification({
+              title: "Proyecto actualizado con exito",
+              message:
+                "El proyecto se ha actualizado con exito en la base de datos",
+              type: "info",
+              insert: "top",
+              container: "top-right",
+              animationIn: ["animate__animated", "animate__fadeIn"],
+              animationOut: ["animate__animated", "animate__fadeOut"],
+              dismiss: {
+                duration: 3500,
+                onScreen: true,
+              },
+            });
+          });
       }
     } catch (error) {
       console.log(error.message);
-    }    
+    }
   };
 
   // Delete Project
@@ -179,7 +195,6 @@ const CreateProject = ({
 
   return (
     <div id="create-container" className="w-100 text-left">
-      
       <div className="container-fluid"></div>
       <div className="d-sm-flex justify-content-between align-items-center">
         <h3 className="text-dark mb-0 pl-3">

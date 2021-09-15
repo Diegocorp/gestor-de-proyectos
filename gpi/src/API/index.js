@@ -5,19 +5,46 @@ const api = axios.create({
 });
 
 //User API Requests
-export const getUsers = payload => api.get('/users', payload);
-export const createUser = payload => api.post('/users', payload);
-export const getUserByEmail = payload => api.get(`/user/${payload.email}`, payload).then(response => { return response.data.data; })
-export const login = payload => api.post('/login', payload).then(response => { localStorage.setItem("ACCESS_TOKEN", response.data.token) })
-export const updateUser = payload => api.put(`/user/${payload._id}`, payload).then(response => { return response.data })
+export const getUsers = (payload) => api.get("/users", payload);
+export const createUser = (payload) => api.post("/users", payload);
+export const getUserByEmail = (payload) =>
+  api.get(`/user/${payload.email}`, payload).then((response) => {
+    return response.data.data;
+  });
+export const login = (payload) =>
+  api.post("/login", payload).then((response) => {
+    localStorage.setItem("ACCESS_TOKEN", response.data.token);
+  });
+export const updateUser = (payload) =>
+  api.put(`/user/${payload._id}`, payload).then((response) => {
+    return response.data;
+  });
 
 //Projects API Requests
-export const getProjects = payload => api.get('/projects', payload).then(response => { return response.data.data });
-export const getProjectById = payload => api.get(`/project/${payload.id}`, payload).then(response => { return response.data.data });
-export const postProject = payload => api.post('/project', payload).then(response => {return response});
-export const putProject = payload => api.put(`/project/${payload._id}`, payload).then(response => {return response}); 
-export const deleteProject = payload => api.delete(`/project/${payload.id}`, payload).then((response) => { return response.data.data });
-
+export const getProjects = (payload) =>
+  api.get("/projects", payload).then((response) => {
+    return response.data.data;
+  });
+export const getProjectById = (payload) =>
+  api.get(`/project/${payload.id}`, payload).then((response) => {
+    return response.data.data;
+  });
+export const postProject = (payload) =>
+  api.post("/project", payload).then((response) => {
+    return response;
+  });
+export const putProject = (payload) =>
+  api.put(`/project/${payload._id}`, payload).then((response) => {
+    return response;
+  });
+export const deleteProject = (payload) =>
+  api.delete(`/project/${payload.id}`, payload).then((response) => {
+    return response.data.data;
+  });
+export const getProjectsByCreator = (payload) =>
+  api.get(`/projects/${payload.creatorID}`, payload).then((response) => {
+    return response.data.data;
+  });
 
 //Image upload AWS S3
 export const postFile = (payload) =>
@@ -44,23 +71,24 @@ export const getDocument = (payload) =>
       return response.data.data;
     });
 export const downloadDocument = (payload) =>
-    api
-      .get(`/upload/projects/${payload._id}/${payload.projectFileName}`, payload)
-      .then((response) => {
-        return response.data;
-      });
+  api
+    .get(`/upload/projects/${payload._id}/${payload.projectFileName}`, payload)
+    .then((response) => {
+      return response.data;
+    });
 export const deleteDocument = (payload) =>
-    api
-      .delete(`/upload/projects/${payload._id}/${payload.projectFileName}`, payload)
-      .then((response) => {
-        return response.status;
-      });
+  api
+    .delete(
+      `/upload/projects/${payload._id}/${payload.projectFileName}`,
+      payload
+    )
+    .then((response) => {
+      return response.status;
+    });
 export const deleteDirectory = (payload) =>
-      api
-        .delete(`/upload/projects/${payload.id}`, payload)
-        .then((response) => {
-          return response.status;
-        });
+  api.delete(`/upload/projects/${payload.id}`, payload).then((response) => {
+    return response.status;
+  });
 
 const apis = {
   getUsers,
@@ -70,6 +98,7 @@ const apis = {
   login,
   getProjects,
   getProjectById,
+  getProjectsByCreator,
   postFile,
   getFile,
   postProject,

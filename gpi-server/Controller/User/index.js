@@ -25,13 +25,13 @@ createUser = async (req, res) => {
       return res.status(201).json({
         success: true,
         id: user._id,
-        message: "User created.",
+        message: "Usuario creado.",
       });
     })
     .catch((error) => {
       return res.status(400).json({
         error,
-        message: "User not created. Data received: ",
+        message: "Usuario no creado. Datos recbido: ",
         user,
       });
     });
@@ -43,7 +43,7 @@ updateUser = async (req, res) => {
   if (!body) {
     return res.status(400).json({
       success: false,
-      error: "You must provide a body to update.",
+      error: "Debes proveer un body para actualizar.",
     });
   }
 
@@ -70,13 +70,13 @@ updateUser = async (req, res) => {
         return res.status(200).json({
           success: true,
           id: user._id,
-          message: "User updated!",
+          message: "Usuario actualizado!",
         });
       })
       .catch((error) => {
         return res.status(404).json({
           error,
-          message: "User not updated",
+          message: "Usuario no actualizado",
         });
       });
   });
@@ -91,7 +91,9 @@ deleteUser = async (req, res) => {
       });
     }
     if (!user) {
-      return res.status(404).json({ success: false, error: "User not found." });
+      return res
+        .status(404)
+        .json({ success: false, error: "Usuario no fue encontrado." });
     }
     return res.status(200).json({ success: true, data: user });
   }).catch((err) => console.log(err));
@@ -104,7 +106,9 @@ getUserByEmail = async (req, res) => {
     }
 
     if (!user) {
-      return res.status(404).json({ success: false, error: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Usuario no fue encontrado." });
     }
     return res.status(200).json({ success: true, data: user });
   }).catch((err) => console.log(err));
@@ -118,7 +122,7 @@ getUsers = async (req, res) => {
     if (!users.length) {
       return res
         .status(400)
-        .json({ success: false, error: "Project not found" });
+        .json({ success: false, error: "Proyecto no fue encontrado." });
     }
     return res.status(200).json({ success: true, data: users });
   }).catch((err) => console.log(err));
@@ -169,7 +173,7 @@ login = async (req, res) => {
     );
   } catch (err) {
     console.log(err.message);
-    res.status(500).send("Error en guardar");
+    res.status(500).send("Error en el guardado.");
   }
 };
 

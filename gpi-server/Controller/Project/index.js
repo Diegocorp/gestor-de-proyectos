@@ -23,13 +23,13 @@ createProject = (req, res) => {
       return res.status(201).json({
         success: true,
         id: project._id,
-        message: "Project created.",
+        message: "Project creado.",
       });
     })
     .catch((error) => {
       return res.status(400).json({
         error,
-        message: "Project not created.",
+        message: "Proyecto no creado.",
       });
     });
 };
@@ -40,7 +40,7 @@ updateProject = async (req, res) => {
   if (!body) {
     return res.status(400).json({
       success: false,
-      error: "You mmust provide a body to update.",
+      error: "Debes proveer un body que actualizar.",
     });
   }
 
@@ -67,6 +67,7 @@ updateProject = async (req, res) => {
     project.studentMember = body.studentMember;
     project.teacherMember = body.teacherMember;
     project.projectFileName = body.projectFileName;
+    project.creatorID = body.creatorID;
 
     project
       .save()
@@ -74,13 +75,13 @@ updateProject = async (req, res) => {
         return res.status(200).json({
           success: true,
           id: project._id,
-          message: "Project updated!",
+          message: "Proyect actualizado!",
         });
       })
       .catch((error) => {
         return res.status(404).json({
           error,
-          message: "Project not updated!",
+          message: "Proyecto actualizado!",
         });
       });
   });
@@ -97,7 +98,7 @@ deleteProject = async (req, res) => {
     if (!project) {
       return res
         .status(404)
-        .json({ success: false, error: `Project not found` });
+        .json({ success: false, error: `Proyecto no fue encontrado` });
     }
     return res.status(200).json({ success: true, data: project });
   }).catch((err) => console.log(err));
@@ -112,9 +113,23 @@ getProjectById = async (req, res) => {
     if (!project) {
       return res
         .status(404)
-        .json({ success: false, error: "Project not found" });
+        .json({ success: false, error: "Proyecto no fue encontrado" });
     }
     return res.status(200).json({ success: true, data: project });
+  }).catch((err) => console.log(err));
+};
+
+getProjectsByCreator = async (req, res) => {
+  await Project.find({ creatorID: req.params.creatorID }, (err, projects) => {
+    if (err) {
+      return res.status(400).json({ success: false, error: err });
+    }
+    if (!projects.length) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Proyectos no fuerone encontrados" });
+    }
+    return res.status(200).json({ success: true, data: projects });
   }).catch((err) => console.log(err));
 };
 
@@ -126,7 +141,7 @@ getProjects = async (req, res) => {
     if (!projects.length) {
       return res
         .status(404)
-        .json({ success: false, error: "Project not found" });
+        .json({ success: false, error: "Proyect0 no fue encontrado" });
     }
     return res.status(200).json({ success: true, data: projects });
   }).catch((err) => console.log(err));
@@ -138,4 +153,5 @@ module.exports = {
   deleteProject,
   getProjectById,
   getProjects,
+  getProjectsByCreator,
 };
