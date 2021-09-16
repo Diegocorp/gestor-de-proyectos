@@ -54,18 +54,30 @@ function GlobalFilter({
   );
 }
 
-function CreatorFilter({ toggler }) {
+function CreatorFilter({ setToggler, toggle }) {
   return (
     <span className="d-flex">
-      <div className="input-group mb-3 mr-3">
-        <div className="input-group-prepend">
-          <button
-            className="btn btn-outline-primary text-capitalize"
-            style={{ height: "45px" }}
-            onClick={() => toggler(() => true)}
+      <div className=" mb-3 mr-3">
+        <div className="">
+          <span
+            className={`btn btn-outline-primary text-capitalize ${
+              toggle ? "creatorFilterActive" : "creatorFilterInactive"
+            }`}
+            style={{ width: "fit-content" }}
+            onClick={() => setToggler(() => !toggle)}
           >
-            Mis Proyectos
-          </button>
+            <span
+              className={`filterBtn_innerSpace ${
+                toggle ? "cerrar" : "text-slide"
+              }`}
+            >
+              <span className="text-slide">Mis Proyectos</span>
+              <div>
+                <span className="line line1 bg-primary"></span>
+                <span className="line line3 bg-primary"></span>
+              </div>
+            </span>
+          </span>
         </div>
       </div>
     </span>
@@ -95,7 +107,11 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
-const CustomTable = ({ projectsData, setToggleUserProjects }) => {
+const CustomTable = ({
+  projectsData,
+  setToggleUserProjects,
+  toggleUserProjects,
+}) => {
   let { url } = useRouteMatch();
   const history = useHistory();
 
@@ -250,7 +266,10 @@ const CustomTable = ({ projectsData, setToggleUserProjects }) => {
           globalFilter={state.globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
-        <CreatorFilter toggler={setToggleUserProjects} />
+        <CreatorFilter
+          setToggler={setToggleUserProjects}
+          toggle={toggleUserProjects}
+        />
       </span>
       <Table
         {...getTableProps()}

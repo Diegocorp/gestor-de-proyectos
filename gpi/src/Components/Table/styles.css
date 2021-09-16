@@ -7,7 +7,7 @@ button:disabled {
 
 button:hover:disabled {
   background-color: transparent;
-  color: grey; 
+  color: grey;
   border: 1px white dotted;
 }
 
@@ -16,15 +16,85 @@ button:hover:disabled {
 }
 
 #table__responsive {
-  padding-top: 1.5em; 
+  padding-top: 1.5em;
 }
 
-.table > .btn{
+.table > .btn {
   font-size: larger;
-  padding: .25rem .5rem;
+  padding: 0.25rem 0.5rem;
   border-radius: 15% !important;
 }
 
 tbody {
   cursor: pointer;
+}
+
+.creatorFilterActive {
+  border-radius: 50%;
+  height: 45px;
+  width: 50px;
+  max-width: 50px;
+  overflow: "hidden";
+  transition: width 1s, border-radius 0.5s, min-width 1s, max-width 1s;
+  -webkit-transition: width 1s, border-radius 0.5s, min-width 1s, max-width 1s;
+  -moz-transition: width 1s, border-radius 0.5s, min-width 1s, max-width 1s;
+}
+
+.creatorFilterInactive {
+  border-radius: 8px 8px;
+  height: 45px;
+  width: 150px;
+  max-width: 300px;
+  overflow: "hidden";
+  transition: width 1s, border-radius 0.5s;
+  -webkit-transition: width 1s, border-radius 0.5s;
+  -moz-transition: width 1s, border-radius 0.5s;
+}
+
+.filterBtn_innerSpace {
+  display: flex;
+  min-width: 250px;
+  height: 20px;
+  margin: 0px;
+  position: relative;
+  transition: sliding-horizontally 1s;
+}
+
+.filterBtn_innerSpace.cerrar {
+  margin: 0px;
+  right: 220px;
+  transition: min-width 1s;
+}
+
+.line {
+  position: absolute;
+  opacity: 0;
+  min-width: 30px;
+  height: 4px;
+  border-radius: 2px;
+  transition: all cubic-bezier(0.25, 0.1, 0.28, 1.54) 1s;
+}
+
+.btn:hover .filterBtn_innerSpace.cerrar .line {
+  background-color: white !important;
+}
+
+.filterBtn_innerSpace.cerrar .line1 {
+  display: block;
+  transform: rotate(45deg);
+  top: 50%;
+  right: 3px;
+  opacity: 1;
+}
+
+.filterBtn_innerSpace.cerrar .line3 {
+  opacity: 1;
+  display: block;
+  transform: rotate(-45deg);
+  top: 50%;
+  right: 3px;
+}
+
+.filterBtn_innerSpace.cerrar .text-slide {
+  opacity: 0;
 }

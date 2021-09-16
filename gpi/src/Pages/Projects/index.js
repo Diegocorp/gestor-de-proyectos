@@ -40,6 +40,7 @@ const Projects = () => {
             <CustomTable
               projectsData={projectsData}
               setToggleUserProjects={setToggleUserProjects}
+              toggleUserProjects={toggleUserProjects}
             />
           )}
         </div>
