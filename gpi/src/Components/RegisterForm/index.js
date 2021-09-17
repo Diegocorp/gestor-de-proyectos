@@ -48,10 +48,10 @@ const RegisterForm = (props) => {
         <div className="text-center">
           <h4 className="text-dark mb-4">Registro</h4>
         </div>
-        <form className="needs-validation" novalidate>
+        <form className="needs-validation" noValidate>
           <div className="form-group">
             <input
-              required="true"
+              required={true}
               className="form-control form-control-user rounded-pill"
               type="text"
               id="userName"
@@ -64,7 +64,7 @@ const RegisterForm = (props) => {
           <div className="form-group row">
             <div className="col-sm-6 mb-3 mb-sm-0">
               <input
-                required="true"
+                required={true}
                 className="form-control form-control-user rounded-pill"
                 type="text"
                 id="firstName"
@@ -76,7 +76,7 @@ const RegisterForm = (props) => {
             </div>
             <div className="col-sm-6">
               <input
-                required="true"
+                required={true}
                 className="form-control form-control-user rounded-pill"
                 type="text"
                 id="lastName"
@@ -90,7 +90,7 @@ const RegisterForm = (props) => {
           <div className="form-group row">
             <div className="col-sm-6 mb-3 mb-sm-0">
               <input
-                required="true"
+                required={true}
                 className="form-control form-control-user rounded-pill"
                 type="text"
                 id="academy"
@@ -102,7 +102,7 @@ const RegisterForm = (props) => {
             </div>
             <div className="col-sm-6">
               <input
-                required="true"
+                required={true}
                 className="form-control form-control-user rounded-pill"
                 type="text"
                 id="employeeNumber"
@@ -115,7 +115,7 @@ const RegisterForm = (props) => {
           </div>
           <div className="form-group">
             <input
-              required="true"
+              required={true}
               className="form-control form-control-user rounded-pill"
               type="email"
               id="email"
@@ -129,7 +129,7 @@ const RegisterForm = (props) => {
           <div className="form-group row">
             <div className="col-sm-6 mb-3 mb-sm-0">
               <input
-                required="true"
+                required={true}
                 className="form-control form-control-user rounded-pill"
                 type="password"
                 value={state.password}
@@ -141,7 +141,7 @@ const RegisterForm = (props) => {
             </div>
             <div className="col-sm-6">
               <input
-                required="true"
+                required={true}
                 className="form-control form-control-user rounded-pill"
                 type="password"
                 id="repeatPassword"
@@ -151,7 +151,7 @@ const RegisterForm = (props) => {
             </div>
           </div>
           <input
-            required="true"
+            required={true}
             className="form-control form-control-user rounded-pill"
             type="text"
             id="securityCode"

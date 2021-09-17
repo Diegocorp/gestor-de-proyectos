@@ -126,6 +126,10 @@ const CreateProject = ({
                 onScreen: true,
               },
             });
+          })
+          .catch((error) => {
+            // handle error
+            console.log(error);
           });
       } else {
         await apis

@@ -65,8 +65,8 @@ const deleteDocument = (req, res) => {
   try {
     const fullpath = `projects/${req.params.id}/${req.params.fileName}`;
     const params = { Bucket: "gpi-images", Key: fullpath };
-    s3.deleteObject(params, function(err, data){
-      if(err) console.log(err, err.stack);
+    s3.deleteObject(params, function (err, data) {
+      if (err) console.log(err, err.stack);
       else console.log(`Document deleted`);
     });
     res.status(200).json({ success: true });
@@ -77,23 +77,24 @@ const deleteDocument = (req, res) => {
 
 const deleteDirectory = async (req, res) => {
   const listParams = {
-      Bucket: 'gpi-images',
-      Prefix: `projects/${req.params.id}/`
+    Bucket: "gpi-images",
+    Prefix: `projects/${req.params.id}/`,
   };
   const listedObjects = await s3.listObjectsV2(listParams).promise();
   if (listedObjects.Contents.length === 0) return;
   const deleteParams = {
-      Bucket: 'gpi-images',
-      Delete: { Objects: [] }
+    Bucket: "gpi-images",
+    Delete: { Objects: [] },
   };
   listedObjects.Contents.forEach(({ Key }) => {
-      deleteParams.Delete.Objects.push({ Key });
+    deleteParams.Delete.Objects.push({ Key });
   });
 
   await s3.deleteObjects(deleteParams).promise();
 
-  if (listedObjects.IsTruncated) await emptyS3Directory('gpi-images', `projects/${req.params.id}/`);
-}
+  if (listedObjects.IsTruncated)
+    await emptyS3Directory("gpi-images", `projects/${req.params.id}/`);
+};
 
 module.exports = {
   uploadImage,

@@ -4,33 +4,33 @@ const Schema = mongoose.Schema;
 const newUserSchema = new Schema({
   userName: {
     type: String,
-    required: true,
+    required: false,
   },
   email: {
     type: String,
-    unique: true,
-    required: true,
+    unique: false,
+    required: false,
   },
   firstName: {
     type: String,
-    required: true,
+    required: false,
   },
   lastName: {
     type: String,
-    required: true,
+    required: false,
   },
   academy: {
     type: String,
-    required: true,
+    required: false,
   },
   employeeNumber: {
     type: Number,
-    required: true,
-    unique: true,
+    required: false,
+    unique: false,
   },
   password: {
     type: String,
-    required: true,
+    required: false,
   },
   image: {
     type: String,

@@ -40,7 +40,7 @@ const AuthForm = ({ setGuestMode }) => {
       setGuestMode(false);
       history.push(`/user/${value.employeeNumber}/statistics`);
     } catch (error) {
-      alert("Error en el ingreso de los datos de usuario...");
+      console.log(error);
     }
   };
 

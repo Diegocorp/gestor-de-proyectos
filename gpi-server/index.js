@@ -22,5 +22,5 @@ app.get("/", (req, res) => {
 app.use("/", appRouter);
 
 app.listen(apiPort, () => {
-  console.log(`Server running on port ${apiPort}`)
+  console.log(`Server running on port ${apiPort}`);
 });
