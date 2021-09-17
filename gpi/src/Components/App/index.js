@@ -1,22 +1,22 @@
-import React, { useState, useMemo } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles.css';
+import React, { useState, useMemo } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles.css";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
-} from 'react-router-dom';
-import PrivateRoute from '../../Utils/PrivateRoute';
-import Login from '../../Pages/Login';
-import Forgot from '../../Pages/Forgot';
-import Register from '../../Pages/Register';
-import PageFrame from '../../Utils/PageFrame'
-import { UserContext } from '../../Utils/UserContext';
+  Redirect,
+} from "react-router-dom";
+import PrivateRoute from "../../Utils/PrivateRoute";
+import Login from "../../Pages/Login";
+import Forgot from "../../Pages/Forgot";
+import Register from "../../Pages/Register";
+import PageFrame from "../../Utils/PageFrame";
+import { UserContext } from "../../Utils/UserContext";
 
 function App() {
   const [user, setUser] = useState({});
-  const value = useMemo(() => ({ user, setUser}), [user, setUser]);
+  const value = useMemo(() => ({ user, setUser }), [user, setUser]);
   const [guestMode, setGuestMode] = useState();
   return (
     <Router>
@@ -24,22 +24,22 @@ function App() {
         <Switch>
           <UserContext.Provider value={value}>
             <Route path="/forgot">
-              <Forgot/>
+              <Forgot />
             </Route>
             <Route path="/register">
-              <Register/>
+              <Register />
             </Route>
             <Route path="/guest">
               <PageFrame guestMode={guestMode} />
             </Route>
             <Route path="/login">
-              <Login setGuestMode={setGuestMode}/>
+              <Login setGuestMode={setGuestMode} />
             </Route>
-            <PrivateRoute path={`/${user.employeeNumber}`}>
+            <PrivateRoute path={`/:userID/:page`}>
               <PageFrame />
             </PrivateRoute>
             <Route path="/">
-              <Redirect to="/login"/>
+              <Redirect to="/login" />
             </Route>
           </UserContext.Provider>
         </Switch>

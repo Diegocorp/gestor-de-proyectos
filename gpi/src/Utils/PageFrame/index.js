@@ -12,9 +12,6 @@ import "./styles.css";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 
 const PageFrame = ({ data, guestMode }) => {
-  let { path } = useRouteMatch();
-  let currentPath = window.location.pathname.replace(path, "");
-  const [state, setState] = useState(`${currentPath}`);
   const [size, setSize] = useState(false);
   const sizeValue = useMemo(() => ({ size, setSize }), [size, setSize]);
 
@@ -24,40 +21,31 @@ const PageFrame = ({ data, guestMode }) => {
       style={{ position: "relative" }}
     >
       <SizeContext.Provider value={sizeValue}>
-        <NavBar
-          state={state}
-          setState={setState}
-          guestMode={guestMode ? guestMode : null}
-        />
+        <NavBar guestMode={guestMode ? guestMode : null} />
       </SizeContext.Provider>
       <span id="page-container" className="bg-white pt-0 m-0 w-100 h-100">
-        <Header
-          data={data}
-          state={state}
-          setState={setState}
-          guestMode={guestMode}
-        />
+        <Header data={data} guestMode={guestMode} />
         <div id="page-container__div" className="">
           <Switch>
-            <Route path={`${path}/me`}>
+            <Route path={`/:userID/me`}>
               <UserPage />
             </Route>
-            <Route path={`${path}/statistics`}>
+            <Route path={`/:userID/statistics`}>
               <Statistics />
             </Route>
-            <Route path={`${path}/suggestions`}>
+            <Route path={`/:userID/suggestions`}>
               <Suggestions />
             </Route>
-            <Route exact path={`${path}/projects`}>
+            <Route exact path={`/:userID/projects`}>
               <Projects />
             </Route>
-            <Route path={`${path}/create`}>
+            <Route path={`/:userID/create`}>
               <CreateProject />
             </Route>
-            <Route path={`${path}/projects/:id`}>
+            <Route path={`/:userID/projects/:id`}>
               <Project guestMode={guestMode} />
             </Route>
-            <Route path={`${path}/`}>
+            <Route path={`/:userID/`}>
               <h1>The default page</h1>
             </Route>
           </Switch>

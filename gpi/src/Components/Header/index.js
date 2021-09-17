@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { UserContext } from "../../Utils/UserContext";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CustomDropdown from "../CustomDropdown";
 import "./styles.css";
 
-function Header({ setState, guestMode }) {
+function Header({ guestMode }) {
   const { setUser } = useContext(UserContext);
 
   function RenderLogout() {
@@ -22,14 +22,9 @@ function Header({ setState, guestMode }) {
   }
 
   function RenderUser() {
-    let { url } = useRouteMatch();
     return (
       <div className="ml-auto d-block btn  p-0 rounded rounded-bottom-lg">
-        <Link
-          className="w-100 dropdown-item m-0 rounded-lg"
-          onClick={() => setState("/me")}
-          to={`${url}/me`}
-        >
+        <Link className="w-100 dropdown-item m-0 rounded-lg" to={`me`}>
           Perfil
         </Link>
       </div>
@@ -37,14 +32,9 @@ function Header({ setState, guestMode }) {
   }
 
   function RenderSuggestion() {
-    let { url } = useRouteMatch();
     return (
       <div className="ml-auto d-block btn  p-0 rounded rounded-bottom-lg">
-        <Link
-          className="w-100 dropdown-item m-0 rounded-lg"
-          onClick={() => setState("/me")}
-          to={`${url}/Suggestions`}
-        >
+        <Link className="w-100 dropdown-item m-0 rounded-lg" to={`Suggestions`}>
           Sugerencias
         </Link>
       </div>
@@ -60,7 +50,6 @@ function Header({ setState, guestMode }) {
     <nav id="NavBar" className=" shadow w-100">
       <div className="row col-12 d-flex justify-content-end">
         <CustomDropdown
-          state={setState}
           logout={RenderLogout()}
           userPage={RenderUser()}
           suggestionPage={RenderSuggestion()}
