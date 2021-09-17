@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import "react-notifications-component/dist/theme.css";
 import { store } from "react-notifications-component";
 import { UserContext } from "../../Utils/UserContext";
+import { jsPDF } from "jspdf";
 
 const CreateProject = ({
   title,
@@ -164,6 +165,21 @@ const CreateProject = ({
       console.log(error.message);
     }
   };
+
+  function createPDF() {
+    const doc = new jsPDF();
+    doc.setFont("Helvetica", "normal", "bold");
+    doc.setFontSize(22);
+    doc.text(`${dataObject.proyectName}`, 10, 10);
+    doc.setFont("Helvetica", "normal", "normal");
+    doc.setFontSize(11);
+    doc.text(
+      `Fecha de inicio: ${dataObject.startDate} \n Fecha de finalización: ${dataObject.conclusionDate}`,
+      100,
+      10
+    );
+    doc.save(`${dataObject.proyectName}.pdf`);
+  }
 
   // Delete Project
   const deleteProject = async () => {
@@ -589,7 +605,7 @@ const CreateProject = ({
             </div>
           </div>
           {guestMode ? null : (
-            <div className="form-group d-flex justify-content-between mt-4">
+            <div className="form-group d-flex justify-content-around mt-4">
               <button
                 id="proyectBtn"
                 className="btn btn-outline-primary text-capitalize font-weight-bold"
@@ -599,9 +615,16 @@ const CreateProject = ({
                 Guardar datos
               </button>
               <button
+                className="btn btn-outline-primary text-capitalize font-weight-bold"
+                type="button"
+                onClick={() => createPDF()}
+              >
+                Descargar documento
+              </button>
+              <button
                 onClick={deleteProject}
                 id="deleteBtn"
-                className="btn btn-outline-danger text-capitalize font-weight-bold flex-end"
+                className="btn btn-outline-danger text-capitalize font-weight-bold"
                 style={edit ? { display: "block" } : { display: "none" }}
                 type="button"
               >
