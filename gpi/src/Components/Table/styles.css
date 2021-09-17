@@ -35,9 +35,10 @@ tbody {
   width: 50px;
   max-width: 50px;
   overflow: "hidden";
-  transition: width 1s, border-radius 0.5s, min-width 1s, max-width 1s;
-  -webkit-transition: width 1s, border-radius 0.5s, min-width 1s, max-width 1s;
-  -moz-transition: width 1s, border-radius 0.5s, min-width 1s, max-width 1s;
+  transition: width 1s, border-radius 0.5s, min-width 0.5s, max-width 0.5s;
+  -webkit-transition: width 1s, border-radius 0.5s, min-width 0.5s,
+    max-width 0.5s;
+  -moz-transition: width 1s, border-radius 0.5s, min-width 0.5s, max-width 0.5s;
 }
 
 .creatorFilterInactive {

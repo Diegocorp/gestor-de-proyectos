@@ -24,10 +24,7 @@ const NavItem = (props) => {
           (page === `${props.id}` ? styleSelected : styleUnSelected)
         }
         style={page === `${props.id}` ? {} : { color: "rgba(255,255,255,.5)" }}
-        to={`/${userID}/${props.id}`}
-        onClick={() => {
-          page = props.id;
-        }}
+        to={!userID ? `/guest/${props.id}` : `/user/${userID}/${props.id}`}
       >
         {props.icon ? (
           <FontAwesomeIcon

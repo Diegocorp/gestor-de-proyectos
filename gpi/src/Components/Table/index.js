@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory, useRouteMatch, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import {
   useTable,
@@ -112,13 +112,13 @@ const CustomTable = ({
   setToggleUserProjects,
   toggleUserProjects,
 }) => {
-  let { url } = useRouteMatch();
   const history = useHistory();
-  let { user } = useParams();
+  let { userID } = useParams();
 
   const handleRowClick = async (id) => {
-    console.log(user);
-    history.push(`${url}/${id}`);
+    history.push(
+      userID ? `/user/${userID}/project/${id}` : `/guest/project/${id}`
+    );
   };
 
   const filterTypes = React.useMemo(
@@ -268,12 +268,12 @@ const CustomTable = ({
           globalFilter={state.globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
-        {
+        {userID ? (
           <CreatorFilter
             setToggler={setToggleUserProjects}
             toggle={toggleUserProjects}
           />
-        }
+        ) : null}
       </span>
       <Table
         {...getTableProps()}

@@ -4,7 +4,7 @@ import TecLogo from "../../Assets/img/tecnm-1.png";
 import "./styles.css";
 import NavItem from "../NavItem";
 import NavButton from "../NavButton";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   faTachometerAlt,
   faUser,
@@ -12,13 +12,9 @@ import {
   faEdit,
 } from "@fortawesome/free-solid-svg-icons";
 
-const NavBar = ({ state, setState, guestMode }) => {
-  let { url } = useRouteMatch();
+const NavBar = ({ guestMode }) => {
   const { size } = useContext(SizeContext);
-
-  const onClickLogo = () => {
-    setState("/statistics");
-  };
+  let { userID } = useParams();
 
   const fullWidth = { width: "15em", minHeight: "100%", height: "100%" };
   const reduced = { width: "7em", minHeight: "100%", height: "100%" };
@@ -34,8 +30,7 @@ const NavBar = ({ state, setState, guestMode }) => {
       <div className="container-fluid d-flex flex-column p-0">
         <Link
           className="navbar-brand text-justify d-flex justify-content-center align-items-center sidebar-brand m-0"
-          to={`${url}/statistics`}
-          onClick={onClickLogo}
+          to={guestMode ? `/guest/statistics` : `/user/${userID}/statistics`}
         >
           <div className="sidebar-brand-icon rotate-n-0">
             <img id="iconSup" src={TecLogo} alt="" />
@@ -50,27 +45,14 @@ const NavBar = ({ state, setState, guestMode }) => {
         <ul className="nav navbar-nav text-light text-left pl-0 mt-3 justify-content-start">
           <NavItem
             id="statistics"
-            url={`${url}/statistics`}
             icon={faTachometerAlt}
             title="Estadisticas"
           />
-          <NavItem
-            guestMode={guestMode}
-            id="me"
-            url={`${url}/me`}
-            icon={faUser}
-            title="Perfil"
-          />
-          <NavItem
-            id="projects"
-            url={`${url}/projects`}
-            icon={faTable}
-            title="Proyectos"
-          />
+          <NavItem guestMode={guestMode} id="me" icon={faUser} title="Perfil" />
+          <NavItem id="projects" icon={faTable} title="Proyectos" />
           <NavItem
             guestMode={guestMode}
             id="create"
-            url={`${url}/create`}
             icon={faEdit}
             title="Gestor de Proyectos"
           />

@@ -9,7 +9,7 @@ import Projects from "../../Pages/Projects";
 import Project from "../../Pages/Project";
 import CreateProject from "../../Pages/CreateProject";
 import "./styles.css";
-import { Switch, Route, useRouteMatch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 const PageFrame = ({ data, guestMode }) => {
   const [size, setSize] = useState(false);
@@ -27,26 +27,38 @@ const PageFrame = ({ data, guestMode }) => {
         <Header data={data} guestMode={guestMode} />
         <div id="page-container__div" className="">
           <Switch>
-            <Route path={`/:userID/me`}>
+            <Route path={`/user/:userID/me`}>
               <UserPage />
             </Route>
-            <Route path={`/:userID/statistics`}>
+            <Route path={`/user/:userID/statistics`}>
               <Statistics />
             </Route>
-            <Route path={`/:userID/suggestions`}>
+            <Route exact path={`/user/guest#statistics`}>
+              <Statistics />
+            </Route>
+            <Route path={`/user/:userID/suggestions`}>
               <Suggestions />
             </Route>
-            <Route exact path={`/:userID/projects`}>
+            <Route exact path={`/user/:userID/projects`}>
               <Projects />
             </Route>
-            <Route path={`/:userID/create`}>
+            <Route path={`/user/:userID/create`}>
               <CreateProject />
             </Route>
-            <Route path={`/:userID/projects/:id`}>
-              <Project guestMode={guestMode} />
+            <Route path={`/user/:userID/project/:id`}>
+              <Project />
             </Route>
-            <Route path={`/:userID/`}>
+            <Route path={`/user/:userID/`}>
               <h1>The default page</h1>
+            </Route>
+            <Route path={`/guest/statistics`}>
+              <Statistics />
+            </Route>
+            <Route path={`/guest/projects`}>
+              <Projects guestMode={guestMode} />
+            </Route>
+            <Route path={`/guest/project/:id`}>
+              <Project guestMode={guestMode} />
             </Route>
           </Switch>
         </div>

@@ -29,13 +29,13 @@ function App() {
             <Route path="/register">
               <Register />
             </Route>
-            <Route path="/guest">
+            <Route path="/guest/:page">
               <PageFrame guestMode={guestMode} />
             </Route>
             <Route path="/login">
               <Login setGuestMode={setGuestMode} />
             </Route>
-            <PrivateRoute path={`/:userID/:page`}>
+            <PrivateRoute path={`/user/:userID/:page`}>
               <PageFrame />
             </PrivateRoute>
             <Route path="/">
