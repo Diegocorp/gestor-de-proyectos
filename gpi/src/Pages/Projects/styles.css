@@ -10,11 +10,14 @@
 
 #hide-scroll__child {
   position: relative;
-  top:0;
+  top: 0;
   bottom: 0;
   left: 0;
-  right: -17px !important; /* Increase/Decrease this value for cross-browser compatibility */
+  right: -17px !important;
   height: 100% !important;
+  border-width: 0px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 #hide-scroll__child::-webkit-scrollbar {

@@ -1,0 +1,6 @@
+#preview {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background-image: url("../../Assets/img/tecnm-1.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+}

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@formspree/react": "^2.2.3",
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-brands-svg-icons": "^5.15.2",
     "@fortawesome/free-regular-svg-icons": "^5.15.2",
@@ -13,22 +14,29 @@
     "@testing-library/user-event": "^12.6.0",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
+    "concurrently": "^6.2.0",
+    "express": "^4.17.1",
     "jquery": "^3.5.1",
+    "jspdf": "^2.4.0",
     "match-sorter": "^6.2.0",
+    "mdbreact": "^5.1.0",
+    "nodemon": "^2.0.7",
     "popper.js": "^1.16.1",
-    "react": "^17.0.1",
+    "react": "^16.0.1",
     "react-bootstrap": "^1.4.3",
-    "react-dom": "^17.0.1",
+    "react-dom": "^16.0.1",
+    "react-notifications-component": "^3.1.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
+    "react-scripts": "^4.0.3",
     "react-table": "^7.6.3",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start-client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start": "concurrently \"cd ../gpi-server && nodemon index.js\"  \"cd ../gpi && npm run start-client\""
   },
   "eslintConfig": {
     "extends": [

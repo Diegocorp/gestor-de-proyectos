@@ -1,0 +1,8 @@
+#collapseBtn{
+  padding: .75rem .75rem;
+}
+
+#collapseBtn > span > svg {
+  height: 1.25rem;
+  width: 1.25rem;
+}

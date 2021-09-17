@@ -16,6 +16,6 @@
   color: rgba(255,255,255,.55) !important;
 }
 
-#NavBar {
-  padding: 1vh 0;
+#navbar-nav {
+  padding: 2vw;
 }

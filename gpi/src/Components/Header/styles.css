@@ -1,5 +1,5 @@
 #NavBar {
-
+  padding: .5rem;
 }
 
 /* The sticky class is added to the header with JS when it reaches its scroll position */
