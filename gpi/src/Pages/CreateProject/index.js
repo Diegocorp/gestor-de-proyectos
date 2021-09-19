@@ -137,14 +137,14 @@ const CreateProject = ({
         await apis
           .putProject(dataObject)
           .then(() => {
-            if (
-              projectData.projectFileName !== dataObject.projectFileName &&
-              projectData.projectFileName
-            ) {
-              apis.deleteDocument({
-                _id: id,
-                projectFileName: projectData.projectFileName,
-              });
+            // Use an algorithm that checks for differences in both objects and erase the differences from s3
+            for (var key in projectData.projectFileName) {
+              if (!dataObject.projectFileName.hasOwnProperty(`${key}`)) {
+                apis.deleteDocument({
+                  _id: id,
+                  projectFileName: projectData.projectFileName[key],
+                });
+              }
             }
           })
           .then(() => {
@@ -227,6 +227,17 @@ const CreateProject = ({
       <form id="projectID" className={`needs-validation`} noValidate>
         <div className="col-xl-12 offset-xl-0">
           <div className="card shadow mb-3">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                console.log(
+                  projectData.projectFileName,
+                  dataObject.projectFileName
+                );
+              }}
+            >
+              ProjectData
+            </button>
             <div className="card-header py-3">
               <p className="text-primary m-0 font-weight-bold">
                 Datos del proyecto
@@ -416,6 +427,7 @@ const CreateProject = ({
                       <div className="form-group">
                         <AddDoc
                           projectFileName={dataObject.projectFileName}
+                          savedFiles={projectData.projectFileName}
                           setDataObject={setDataObject}
                           guestMode={guestMode}
                           setDocumentUploads={setDocumentUploads}

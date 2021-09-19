@@ -14,13 +14,10 @@ const DocumentButton = ({
   setDocumentUploads,
   projectFileName,
   setDataObject,
+  savedFiles,
 }) => {
   let { id } = useParams();
   const [modal, setModal] = useState(false);
-
-  const selectFile = (id) => {
-    document.querySelector(`#${id}`).click();
-  };
 
   const fileChanged = (e) => {
     let file = e.target.files[0];
@@ -40,7 +37,7 @@ const DocumentButton = ({
   const downloadFile = () => {
     const payload = {
       _id: id,
-      projectFileName: projectFileName,
+      projectFileName: projectFileName[identifier],
     };
     try {
       apis.downloadDocument(payload).then((response) => {
@@ -56,7 +53,7 @@ const DocumentButton = ({
             );
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", projectFileName);
+            link.setAttribute("download", projectFileName[identifier]);
             document.body.appendChild(link);
             link.click();
           });
@@ -66,7 +63,7 @@ const DocumentButton = ({
     }
   };
   return (
-    <span className="ml-3">
+    <span className="ml-3" id={`${identifier}__parent`}>
       <input
         type="file"
         style={{ display: "none" }}
@@ -87,8 +84,8 @@ const DocumentButton = ({
           <span className="font-weight-bolder">
             {
               <u>
-                {projectFileName[identifier] ||
-                  documentUploads[identifier].name}
+                {savedFiles[`${identifier}`] ||
+                  documentUploads[`${identifier}`].name}
               </u>
             }
           </span>
@@ -111,17 +108,6 @@ const DocumentButton = ({
 
           {!guestMode ? (
             <>
-              {/* eslint-disable-next-line */}
-              <a
-                className="dropdown-item"
-                href="#"
-                onClick={() => selectFile(identifier)}
-              >
-                <div className="pl-1">
-                  <FontAwesomeIcon className="w-25 mr-1" icon={faCopy} />
-                  <span className="pr-3 w-50 text-left">Reemplazar</span>
-                </div>
-              </a>
               {/* eslint-disable-next-line */}
               <a
                 className="dropdown-item"

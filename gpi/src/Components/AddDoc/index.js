@@ -8,6 +8,7 @@ const AddDoc = ({
   projectFileName,
   guestMode,
   setDataObject,
+  savedFiles,
 }) => {
   const buttonClick = () => {
     document.querySelector(`#hiddenFile`).click();
@@ -44,15 +45,17 @@ const AddDoc = ({
           />
         )}
 
-        {projectFileName ? (
+        {savedFiles ? (
           <div>
-            {Object.keys(projectFileName).map((key, index) => {
+            {Object.keys(savedFiles).map((key, index) => {
               return (
                 <DocumentButton
                   key={key}
                   identifier={`${key}`}
+                  className={`${key}`}
                   projectFileName={projectFileName}
                   documentUploads={documentUploads}
+                  savedFiles={savedFiles}
                   guestMode={guestMode}
                   setDocumentUploads={setDocumentUploads}
                   setDataObject={setDataObject}

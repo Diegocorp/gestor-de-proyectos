@@ -14,15 +14,21 @@ const Modal = ({
 }) => {
   const confirmDelete = (e) => {
     e.preventDefault();
-    let updatedListFile = projectFileName;
+    let updatedListFile = {};
+    for (var key in projectFileName) {
+      updatedListFile[key] = projectFileName[key];
+    }
     delete updatedListFile[`${identifier}`];
-    let updatedFileUploads = documentUploads;
-    delete updatedFileUploads[`${identifier}`];
     setDataObject((prev) => ({
       ...prev,
       projectFileName: updatedListFile,
     }));
+    let updatedFileUploads = documentUploads;
+    delete updatedFileUploads[`${identifier}`];
     setDocumentUploads(updatedFileUploads);
+    document
+      .getElementById(`${identifier}__parent`)
+      .setAttribute("class", "d-none");
     setModal(false);
   };
 

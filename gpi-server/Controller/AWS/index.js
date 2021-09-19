@@ -44,6 +44,7 @@ const uploadDocument = multer({
       cb(null, { fieldName: file.fieldname });
     },
     key: function (req, res, cb) {
+      console.log(req.body);
       let fullpath = `projects/${req.params.id}/${req.body.fileName}`;
       cb(null, fullpath);
     },
