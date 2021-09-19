@@ -95,7 +95,7 @@ const DocumentButton = ({
           <span>•••</span>
         </button>
         <span className="dropdown-menu dropdown-menu-right">
-          {documentUploads ? (
+          {documentUploads[identifier] ? (
             <span></span>
           ) : (
             <span>

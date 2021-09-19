@@ -32,16 +32,21 @@ const AddDoc = ({
   return (
     <span>
       <span>
-        <input
-          id="fileButton"
-          className="btn btn-outline-primary"
-          type="button"
-          value="Subir documento"
-          onClick={buttonClick}
-        />
-        {documentUploads ? (
+        {guestMode ? (
+          <span></span>
+        ) : (
+          <input
+            id="fileButton"
+            className="btn btn-outline-primary"
+            type="button"
+            value="Subir documento"
+            onClick={buttonClick}
+          />
+        )}
+
+        {projectFileName ? (
           <div>
-            {Object.keys(documentUploads).map((key, index) => {
+            {Object.keys(projectFileName).map((key, index) => {
               return (
                 <DocumentButton
                   key={key}

@@ -98,8 +98,10 @@ const CreateProject = ({
     try {
       //Structure Document form data to upload file
       const formData = new FormData();
-      formData.append("fileName", dataObject.projectFileName);
-      formData.append("document", documentUploads);
+      for (var key in documentUploads) {
+        formData.append("fileName[]", documentUploads[key].name);
+        formData.append("document[]", documentUploads[key]);
+      }
       if (!edit) {
         //project info upload to database then upload document
         setDataObject((prevState) => ({
