@@ -34,9 +34,9 @@ const CreateProject = ({
     lastNameContact: "",
     studentMember: {},
     teacherMember: {},
-    projectFileName: "",
+    projectFileName: {},
   });
-  const [documentUpload, setDocumentUpload] = useState(new File([""], ""));
+  const [documentUploads, setDocumentUploads] = useState({});
 
   useEffect(() => {
     if (projectData) {
@@ -99,7 +99,7 @@ const CreateProject = ({
       //Structure Document form data to upload file
       const formData = new FormData();
       formData.append("fileName", dataObject.projectFileName);
-      formData.append("document", documentUpload);
+      formData.append("document", documentUploads);
       if (!edit) {
         //project info upload to database then upload document
         setDataObject((prevState) => ({
@@ -416,8 +416,8 @@ const CreateProject = ({
                           projectFileName={dataObject.projectFileName}
                           setDataObject={setDataObject}
                           guestMode={guestMode}
-                          setDocumentUpload={setDocumentUpload}
-                          documentUpload={documentUpload}
+                          setDocumentUploads={setDocumentUploads}
+                          documentUploads={documentUploads}
                         />
                       </div>
                     </div>

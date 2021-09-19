@@ -3,8 +3,8 @@ import DocumentButton from "../DocumentButton";
 import "./styles.css";
 
 const AddDoc = ({
-  setDocumentUpload,
-  documentUpload,
+  setDocumentUploads,
+  documentUploads,
   projectFileName,
   guestMode,
   setDataObject,
@@ -14,25 +14,55 @@ const AddDoc = ({
   };
 
   const onFileChange = (e) => {
-    setDocumentUpload(e.target.files[0]);
-    const fileName = e.target.files[0].name;
+    let ran = `FB${Math.ceil(Math.random() * 1000)}`;
+    const file = e.target.files[0];
+    setDocumentUploads((prev) => ({
+      ...prev,
+      [ran]: file,
+    }));
     setDataObject((prev) => ({
       ...prev,
-      projectFileName: fileName,
+      projectFileName: {
+        ...prev.projectFileName,
+        [ran]: file.name,
+      },
     }));
   };
 
   return (
     <span>
-      {documentUpload.name || projectFileName ? (
-        <span>
-          <input
-            disabled
-            id="fileButton"
-            type="button"
-            value="Subir documento"
-            onClick={buttonClick}
-          />
+      <span>
+        <input
+          id="fileButton"
+          className="btn btn-outline-primary"
+          type="button"
+          value="Subir documento"
+          onClick={buttonClick}
+        />
+        {documentUploads ? (
+          <div>
+            {Object.keys(documentUploads).map((key, index) => {
+              return (
+                <DocumentButton
+                  key={key}
+                  identifier={`${key}`}
+                  projectFileName={projectFileName}
+                  documentUploads={documentUploads}
+                  guestMode={guestMode}
+                  setDocumentUploads={setDocumentUploads}
+                  setDataObject={setDataObject}
+                />
+              );
+            })}
+            <input
+              type="file"
+              style={{ display: "none" }}
+              id="hiddenFile"
+              name="hiddenFile"
+              onChange={onFileChange}
+            />
+          </div>
+        ) : (
           <input
             type="file"
             style={{ display: "none" }}
@@ -40,34 +70,8 @@ const AddDoc = ({
             name="hiddenFile"
             onChange={onFileChange}
           />
-
-          <DocumentButton
-            projectFileName={projectFileName}
-            documentUpload={documentUpload}
-            guestMode={guestMode}
-            setDocumentUpload={setDocumentUpload}
-            selectFile={buttonClick}
-            setDataObject={setDataObject}
-          />
-        </span>
-      ) : (
-        <span>
-          <input
-            disabled={guestMode}
-            className="btn btn-outline-primary"
-            id="fileButton"
-            type="button"
-            value="Subir documento"
-            onClick={buttonClick}
-          />
-          <input
-            type="file"
-            style={{ display: "none" }}
-            id="hiddenFile"
-            onChange={onFileChange}
-          />
-        </span>
-      )}
+        )}
+      </span>
     </span>
   );
 };
