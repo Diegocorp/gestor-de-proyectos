@@ -63,7 +63,7 @@ const DocumentButton = ({
     }
   };
   return (
-    <span className="ml-3" id={`${identifier}__parent`}>
+    <div className="mt-1 mb-1" id={`${identifier}__parent`}>
       <input
         type="file"
         style={{ display: "none" }}
@@ -76,7 +76,7 @@ const DocumentButton = ({
         <button
           id="fileBtnDrop"
           type="button"
-          className="w-25 btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
+          className="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
@@ -134,7 +134,7 @@ const DocumentButton = ({
         setDocumentUploads={setDocumentUploads}
         setDataObject={setDataObject}
       ></Modal>
-    </span>
+    </div>
   );
 };
 
