@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faTrash, faCopy } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 import apis from "../../API";
 import axios from "axios";

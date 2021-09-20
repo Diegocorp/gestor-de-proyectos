@@ -97,11 +97,7 @@ const CreateProject = ({
   const onSubmit = async () => {
     try {
       //Structure Document form data to upload file
-      const formData = new FormData();
-      for (var key in documentUploads) {
-        formData.append("fileName[]", documentUploads[key].name);
-        formData.append("document[]", documentUploads[key]);
-      }
+
       if (!edit) {
         //project info upload to database then upload document
         setDataObject((prevState) => ({
@@ -111,7 +107,12 @@ const CreateProject = ({
         apis
           .postProject(dataObject)
           .then((response) => {
-            apis.postDocument({ id: response.data.id, formData });
+            for (var key in documentUploads) {
+              let formData = new FormData();
+              formData.append("fileName", documentUploads[key].name);
+              formData.append("document", documentUploads[key]);
+              apis.postDocument({ id: response.data.id, formData });
+            }
           })
           .then(() => {
             store.addNotification({
@@ -148,7 +149,12 @@ const CreateProject = ({
             }
           })
           .then(() => {
-            apis.postDocument({ id: id, formData });
+            for (var key in documentUploads) {
+              let formData = new FormData();
+              formData.append("fileName", documentUploads[key].name);
+              formData.append("document", documentUploads[key]);
+              apis.postDocument({ id: id, formData });
+            }
           })
           .then(() => {
             store.addNotification({
@@ -227,17 +233,6 @@ const CreateProject = ({
       <form id="projectID" className={`needs-validation`} noValidate>
         <div className="col-xl-12 offset-xl-0">
           <div className="card shadow mb-3">
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                console.log(
-                  projectData.projectFileName,
-                  dataObject.projectFileName
-                );
-              }}
-            >
-              ProjectData
-            </button>
             <div className="card-header py-3">
               <p className="text-primary m-0 font-weight-bold">
                 Datos del proyecto

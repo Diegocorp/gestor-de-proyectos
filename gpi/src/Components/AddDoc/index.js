@@ -79,6 +79,32 @@ const AddDoc = ({
             onChange={onFileChange}
           />
         )}
+        {documentUploads ? (
+          <div>
+            {Object.keys(documentUploads).map((key, index) => {
+              return (
+                <DocumentButton
+                  key={key}
+                  identifier={`${key}`}
+                  className={`${key}`}
+                  projectFileName={projectFileName}
+                  documentUploads={documentUploads}
+                  savedFiles={savedFiles}
+                  guestMode={guestMode}
+                  setDocumentUploads={setDocumentUploads}
+                  setDataObject={setDataObject}
+                />
+              );
+            })}
+            <input
+              type="file"
+              style={{ display: "none" }}
+              id="hiddenFile"
+              name="hiddenFile"
+              onChange={onFileChange}
+            />
+          </div>
+        ) : null}
       </span>
     </span>
   );
