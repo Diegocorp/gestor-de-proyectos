@@ -97,13 +97,13 @@ const CreateProject = ({
   const onSubmit = async () => {
     try {
       //Structure Document form data to upload file
-
+      setDataObject((prevState) => ({
+        ...prevState,
+        creatorID: user.employeeNumber,
+      }));
       if (!edit) {
         //project info upload to database then upload document
-        setDataObject((prevState) => ({
-          ...prevState,
-          creatorID: user.employeeNumber,
-        }));
+
         apis
           .postProject(dataObject)
           .then((response) => {
@@ -420,14 +420,25 @@ const CreateProject = ({
                   <div className="form-row">
                     <div className="col">
                       <div className="form-group">
-                        <AddDoc
-                          projectFileName={dataObject.projectFileName}
-                          savedFiles={projectData.projectFileName}
-                          setDataObject={setDataObject}
-                          guestMode={guestMode}
-                          setDocumentUploads={setDocumentUploads}
-                          documentUploads={documentUploads}
-                        />
+                        {projectData ? (
+                          <AddDoc
+                            projectFileName={dataObject.projectFileName}
+                            savedFiles={projectData.projectFileName}
+                            setDataObject={setDataObject}
+                            guestMode={guestMode}
+                            setDocumentUploads={setDocumentUploads}
+                            documentUploads={documentUploads}
+                          />
+                        ) : (
+                          <AddDoc
+                            projectFileName={dataObject.projectFileName}
+                            savedFiles={false}
+                            setDataObject={setDataObject}
+                            guestMode={guestMode}
+                            setDocumentUploads={setDocumentUploads}
+                            documentUploads={documentUploads}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
