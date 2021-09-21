@@ -2,7 +2,7 @@ import axios from "axios";
 import { store } from "react-notifications-component";
 
 const api = axios.create({
-  baseURL: "http://localhost:1818",
+  baseURL: "https://gpi-deploy.herokuapp.com/",
 });
 
 //User API Requests

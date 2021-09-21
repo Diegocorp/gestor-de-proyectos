@@ -2,7 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-const apiPort = 1818;
+const dotenv = require("dotenv");
+dotenv.config();
 const Connection = require("./Database");
 const appRouter = require("./Routes");
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,6 +22,12 @@ app.get("/", (req, res) => {
 
 app.use("/", appRouter);
 
-app.listen(apiPort, () => {
-  console.log(`Server running on port ${apiPort}`);
+app.use(express.static(path.join(__dirname, "/gpi/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/gpi/build", "index.html"));
+});
+
+app.listen(process.env.PORT || 1818, () => {
+  console.log(`Server running on port ${process.env.PORT || 1818}`);
 });
