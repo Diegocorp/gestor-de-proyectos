@@ -36,7 +36,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "concurrently \"cd ../gpi-server && nodemon index.js\"  \"cd ../gpi && npm run start-client\""
+    "start": "concurrently \"cd .. && nodemon index.js\"  \"npm run start-client\""
   },
   "eslintConfig": {
     "extends": [

@@ -1,8 +1,10 @@
 import axios from "axios";
 import { store } from "react-notifications-component";
+const dotenv = require("dotenv");
+dotenv.config();
 
 const api = axios.create({
-  baseURL: "https://gpi-deploy.herokuapp.com/",
+  baseURL: process.env.PORT || "http://localhost:1818",
 });
 
 //User API Requests
