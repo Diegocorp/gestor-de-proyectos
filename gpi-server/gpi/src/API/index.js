@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const api = axios.create({
-  baseURL: process.env.PORT || "http://localhost:1818",
+  baseURL: process.env.API_URL || "http://localhost:1818",
 });
 
 //User API Requests
