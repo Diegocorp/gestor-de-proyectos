@@ -17,9 +17,9 @@ Connection.once("open", function () {
   console.log("We're connected!");
 });
 
-app.get("/", (req, res) => {
+/* app.get("/", (req, res) => {
   res.send("Hello World!");
-});
+}); */
 
 app.use("/", appRouter);
 
