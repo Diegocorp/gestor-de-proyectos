@@ -1,24 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { ProjectContext } from "../../Utils/ProjectContext";
 import CreateProject from "../CreateProject";
-import apis from "../../API";
 
 const Project = ({ guestMode }) => {
-  const [projectData, setProjectData] = useState({});
-  let { id } = useParams();
-
-  useEffect(() => {
-    try {
-      const payload = {
-        id: id,
-      };
-      apis.getProjectById(payload).then((result) => {
-        setProjectData(result);
-      });
-    } catch (error) {
-      alert(error);
-    }
-  }, [id]);
+  const { project } = useContext(ProjectContext);
+  const [projectData, setProjectData] = useState(project);
 
   return (
     <div className="w-100">

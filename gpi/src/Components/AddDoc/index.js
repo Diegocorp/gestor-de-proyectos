@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import DocumentButton from "../DocumentButton";
 import "./styles.css";
+import { UserContext } from "../../Utils/UserContext";
+import { ProjectContext } from "../../Utils/ProjectContext";
 
 const AddDoc = ({
   setDocumentUploads,
@@ -10,6 +12,16 @@ const AddDoc = ({
   setDataObject,
   savedFiles,
 }) => {
+  const { user } = useContext(UserContext);
+  const { project } = useContext(ProjectContext);
+
+  useEffect(() => {
+    if (user && !guestMode) {
+      if (user.employeeNumber !== project.creatorID) {
+        document.getElementById("fileButton").elements[0].readOnly = true;
+      }
+    }
+  }, []);
   const buttonClick = () => {
     document.querySelector(`#hiddenFile`).click();
   };

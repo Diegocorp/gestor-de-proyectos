@@ -3,9 +3,11 @@ import { UserContext } from "../../Utils/UserContext";
 import { Link } from "react-router-dom";
 import CustomDropdown from "../CustomDropdown";
 import "./styles.css";
+import { GuestContext } from "../../Utils/GuestContext";
 
-function Header({ guestMode }) {
+function Header() {
   const { setUser } = useContext(UserContext);
+  const { setGuest } = useContext(GuestContext);
 
   function RenderLogout() {
     return (
@@ -44,6 +46,7 @@ function Header({ guestMode }) {
   function handleLogout() {
     localStorage.removeItem("ACCESS_TOKEN");
     setUser({});
+    setGuest(false);
   }
 
   return (
@@ -53,7 +56,6 @@ function Header({ guestMode }) {
           logout={RenderLogout()}
           userPage={RenderUser()}
           suggestionPage={RenderSuggestion()}
-          guestMode={guestMode}
         />
       </div>
     </nav>

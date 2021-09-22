@@ -3,7 +3,7 @@ import { UserContext } from "../../Utils/UserContext";
 import { Link, withRouter, useHistory } from "react-router-dom";
 import apis from "../../API";
 
-const AuthForm = ({ setGuestMode }) => {
+const AuthForm = () => {
   let history = useHistory();
   const { setUser } = useContext(UserContext);
   const [state, setState] = useState({
@@ -37,7 +37,6 @@ const AuthForm = ({ setGuestMode }) => {
       }
 
       setUser(value);
-      setGuestMode(false);
       history.push(`/user/${value.employeeNumber}/statistics`);
     } catch (error) {
       console.log(error);

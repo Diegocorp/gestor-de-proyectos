@@ -39,6 +39,8 @@ const CreateProject = ({
   const [documentUploads, setDocumentUploads] = useState({});
 
   useEffect(() => {
+    let pageItems = document.getElementById("projectID");
+    let selectItems = document.querySelectorAll(".form-group > select");
     if (projectData) {
       setDataObject(projectData);
       if (projectData.studentMember) {
@@ -56,16 +58,28 @@ const CreateProject = ({
         );
       }
     }
-    if (guestMode) {
-      for (
-        var i = 0, len = document.getElementById("projectID").elements.length;
-        i < len;
-        ++i
-      ) {
-        document.getElementById("projectID").elements[i].readOnly = true;
+
+    if (projectData) {
+      if (projectData.creatorID !== user.employeeNumber) {
+        for (let i = 0, len = pageItems.length; i < len; ++i) {
+          pageItems.elements[i].readOnly = true;
+        }
+        for (let i = 0; i < selectItems.length; ++i) {
+          selectItems[i].setAttribute("disabled", "");
+        }
+      }
+      if (projectData.creatorID === user.employeeNumber) {
+        for (let i = 0, len = pageItems.elements.length; i < len; ++i) {
+          pageItems.elements[i].readOnly = false;
+        }
+      }
+      if (guestMode) {
+        for (let i = 0, len = pageItems.elements.length; i < len; ++i) {
+          pageItems.elements[i].readOnly = true;
+        }
       }
     }
-  }, [projectData, guestMode]);
+  }, [projectData, guestMode, user]);
 
   const [addStudent, setAddStudent] = useState([]);
   const [addTeacher, setAddTeacher] = useState([]);
@@ -316,7 +330,7 @@ const CreateProject = ({
                   </div>
                 </div>
               </div>
-              <div className="form-row">
+              <div id="selectArea" className="form-row">
                 <div className="col">
                   <div className="form-group">
                     <label htmlFor="first_name">
@@ -326,7 +340,7 @@ const CreateProject = ({
                       id="typeProyect"
                       value={dataObject.typeProyect}
                       onChange={handleType}
-                      className="border rounded form-control"
+                      className="border rounded form-control selectArea"
                       style={{
                         color: "rgb(110, 112, 126)",
                         padding: "6px 12px",
@@ -355,7 +369,7 @@ const CreateProject = ({
                       id="objectiveProject"
                       value={dataObject.objectiveProject}
                       onChange={handleType}
-                      className="border rounded form-control"
+                      className="border rounded form-control selectArea"
                       style={{
                         color: "rgb(110, 112, 126)",
                         padding: "6px 12px",
@@ -378,7 +392,7 @@ const CreateProject = ({
                       id="statusProject"
                       value={dataObject.statusProject}
                       onChange={handleType}
-                      className="border rounded form-control"
+                      className="border rounded form-control selectArea"
                       style={{
                         color: "rgb(110, 112, 126)",
                         padding: "6px 12px",
@@ -628,32 +642,82 @@ const CreateProject = ({
               </div>
             </div>
           </div>
-          {guestMode ? null : (
+          {guestMode ? (
             <div className="form-group d-flex justify-content-around mt-4">
-              <button
-                id="proyectBtn"
-                className="btn btn-outline-primary text-capitalize font-weight-bold"
-                type="button"
-                onClick={onSubmit}
-              >
-                Guardar datos
-              </button>
-              <button
-                className="btn btn-outline-primary text-capitalize font-weight-bold"
-                type="button"
-                onClick={() => createPDF()}
-              >
-                Descargar documento
-              </button>
-              <button
-                onClick={deleteProject}
-                id="deleteBtn"
-                className="btn btn-outline-danger text-capitalize font-weight-bold"
-                style={edit ? { display: "block" } : { display: "none" }}
-                type="button"
-              >
-                Eliminar Proyecto
-              </button>
+              {projectData ? (
+                <button
+                  className="btn btn-outline-primary text-capitalize font-weight-bold"
+                  type="button"
+                  onClick={() => createPDF()}
+                >
+                  Descargar documento
+                </button>
+              ) : (
+                <span className="d-none" />
+              )}
+            </div>
+          ) : (
+            <div className="form-group d-flex justify-content-around mt-4">
+              {projectData ? (
+                projectData.creatorID === user.employeeNumber ? (
+                  <button
+                    id="proyectBtn"
+                    className="btn btn-outline-primary text-capitalize font-weight-bold"
+                    type="button"
+                    onClick={onSubmit}
+                  >
+                    Guardar datos
+                  </button>
+                ) : (
+                  <span className="d-none" />
+                )
+              ) : (
+                <button
+                  id="proyectBtn"
+                  className="btn btn-outline-primary text-capitalize font-weight-bold"
+                  type="button"
+                  onClick={onSubmit}
+                >
+                  Guardar datos
+                </button>
+              )}
+              {projectData ? (
+                <button
+                  className="btn btn-outline-primary text-capitalize font-weight-bold"
+                  type="button"
+                  onClick={() => createPDF()}
+                >
+                  Descargar documento
+                </button>
+              ) : (
+                <span className="d-none" />
+              )}
+
+              {projectData ? (
+                projectData.creatorID === user.employeeNumber ? (
+                  <button
+                    onClick={deleteProject}
+                    id="deleteBtn"
+                    className="btn btn-outline-danger text-capitalize font-weight-bold"
+                    style={edit ? { display: "block" } : { display: "none" }}
+                    type="button"
+                  >
+                    Eliminar Proyecto
+                  </button>
+                ) : (
+                  <span className="d-none" />
+                )
+              ) : (
+                <button
+                  onClick={deleteProject}
+                  id="deleteBtn"
+                  className="btn btn-outline-danger text-capitalize font-weight-bold"
+                  style={edit ? { display: "block" } : { display: "none" }}
+                  type="button"
+                >
+                  Eliminar Proyecto
+                </button>
+              )}
             </div>
           )}
         </div>

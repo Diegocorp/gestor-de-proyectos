@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { UserContext } from "../../Utils/UserContext";
+import { GuestContext } from "../../Utils/GuestContext";
 import Dropdown from "react-bootstrap/Dropdown";
 import TecLogo from "../../Assets/img/tecnm-1.png";
 import "./styles.css";
@@ -18,14 +19,14 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   </span>
 ));
 
-const CustomDropdown = ({ logout, suggestionPage, userPage, guestMode }) => {
+const CustomDropdown = ({ logout, suggestionPage, userPage }) => {
   const { user } = useContext(UserContext);
+  const { guest } = useContext(GuestContext);
   let userFullName = null;
 
   if (user.firstName) {
     userFullName = `${user.firstName} ${user.lastName}`;
   }
-
   return (
     <>
       <Dropdown className="bg-white">
@@ -41,7 +42,7 @@ const CustomDropdown = ({ logout, suggestionPage, userPage, guestMode }) => {
           />
         </Dropdown.Toggle>
         <Dropdown.Menu className="rounded p-0 mt-2">
-          {guestMode ? null : userPage}
+          {guest ? null : userPage}
           {suggestionPage}
           {logout}
         </Dropdown.Menu>

@@ -11,7 +11,7 @@ import CreateProject from "../../Pages/CreateProject";
 import "./styles.css";
 import { Switch, Route } from "react-router-dom";
 
-const PageFrame = ({ data, guestMode }) => {
+const PageFrame = () => {
   const [size, setSize] = useState(false);
   const sizeValue = useMemo(() => ({ size, setSize }), [size, setSize]);
 
@@ -21,10 +21,10 @@ const PageFrame = ({ data, guestMode }) => {
       style={{ position: "relative" }}
     >
       <SizeContext.Provider value={sizeValue}>
-        <NavBar guestMode={guestMode ? guestMode : null} />
+        <NavBar />
       </SizeContext.Provider>
       <span id="page-container" className="bg-white pt-0 m-0 w-100 h-100">
-        <Header data={data} guestMode={guestMode} />
+        <Header />
         <div id="page-container__div" className="">
           <Switch>
             <Route path={`/user/:userID/me`}>
@@ -55,10 +55,10 @@ const PageFrame = ({ data, guestMode }) => {
               <Statistics />
             </Route>
             <Route path={`/guest/projects`}>
-              <Projects guestMode={guestMode} />
+              <Projects />
             </Route>
             <Route path={`/guest/project/:id`}>
-              <Project guestMode={guestMode} />
+              <Project />
             </Route>
           </Switch>
         </div>
