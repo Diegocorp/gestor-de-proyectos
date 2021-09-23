@@ -1,20 +1,10 @@
-import React, { useState, useContext } from "react";
-import { ProjectContext } from "../../Utils/ProjectContext";
+import React from "react";
 import CreateProject from "../CreateProject";
 
-const Project = ({ guestMode }) => {
-  const { project } = useContext(ProjectContext);
-  const [projectData, setProjectData] = useState(project);
-
+const Project = () => {
   return (
     <div className="w-100">
-      <CreateProject
-        title="Vista de proyecto"
-        projectData={projectData}
-        setProjectData={setProjectData}
-        guestMode={guestMode}
-        edit={true}
-      />
+      <CreateProject title="Vista de proyecto" edit={true} />
     </div>
   );
 };

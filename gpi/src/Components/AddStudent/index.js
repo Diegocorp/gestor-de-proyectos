@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import "./styles.css";
+import { GuestContext } from "../../Utils/GuestContext";
+import { UserContext } from "../../Utils/UserContext";
+import { ProjectContext } from "../../Utils/ProjectContext";
 
 const AddStudent = ({
   handleAdd,
@@ -12,13 +15,14 @@ const AddStudent = ({
   index,
   setDataObject,
   addStudent,
-  guestMode,
 }) => {
   const [textFields, setTextFields] = useState({
     studentName: "",
     studentID: "",
   });
-
+  const { guest } = useContext(GuestContext);
+  const { user } = useContext(UserContext);
+  const { project } = useContext(ProjectContext);
   const classAdd = "btn btn-success btn-student";
   const classRemove = "btn btn-danger btn-student";
 
@@ -67,6 +71,19 @@ const AddStudent = ({
     }
   };
 
+  const detectEnable = () => {
+    if (guest) {
+      return true;
+    }
+    if (project.creatorID === undefined) {
+      return false;
+    }
+    if (user.employeeNumber.toString() !== project.creatorID.toString()) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <div className="entry-student input-group">
       <div className="form-row" style={{ width: "100%" }}>
@@ -83,7 +100,7 @@ const AddStudent = ({
               className="border rounded form-control studentName"
               type="text"
               placeholder="Nombre del alumno"
-              readOnly={guestMode}
+              readOnly={detectEnable()}
               name="city"
             />
           </div>
@@ -101,7 +118,7 @@ const AddStudent = ({
               className="form-control studentId"
               type="text"
               placeholder="Número de control"
-              readOnly={guestMode}
+              readOnly={detectEnable()}
               name="city"
             />
           </div>
@@ -109,10 +126,11 @@ const AddStudent = ({
         <div className="col">
           <div className="form-group">
             <div className="input-group-btn" style={{ marginTop: "1.5em" }}>
-              {guestMode ? null : (
+              {guest ? null : (
                 <button
                   className={trigger ? classAdd : classRemove}
                   type="button"
+                  disabled={detectEnable()}
                   onClick={addRemove}
                 >
                   {trigger ? (

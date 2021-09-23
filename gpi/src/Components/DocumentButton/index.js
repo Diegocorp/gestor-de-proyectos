@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -6,11 +6,11 @@ import { useParams } from "react-router-dom";
 import apis from "../../API";
 import axios from "axios";
 import Modal from "../Modal";
+import { GuestContext } from "../../Utils/GuestContext";
 
 const DocumentButton = ({
   identifier,
   documentUploads,
-  guestMode,
   setDocumentUploads,
   projectFileName,
   setDataObject,
@@ -18,6 +18,7 @@ const DocumentButton = ({
 }) => {
   let { id } = useParams();
   const [modal, setModal] = useState(false);
+  const { guest } = useContext(GuestContext);
 
   const fileChanged = (e) => {
     let file = e.target.files[0];
@@ -106,7 +107,7 @@ const DocumentButton = ({
             </span>
           )}
 
-          {!guestMode ? (
+          {!guest ? (
             <>
               {/* eslint-disable-next-line */}
               <a

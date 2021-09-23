@@ -1,24 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./styles.css";
+import apis from "../../API";
 import AddStudent from "../../Components/AddStudent";
 import AddTeacher from "../../Components/AddTeacher";
-import apis from "../../API";
 import AddDoc from "../../Components/AddDoc";
 import { useParams } from "react-router-dom";
 import "react-notifications-component/dist/theme.css";
 import { store } from "react-notifications-component";
 import { UserContext } from "../../Utils/UserContext";
 import { jsPDF } from "jspdf";
+import { GuestContext } from "../../Utils/GuestContext";
+import { ProjectContext } from "../../Utils/ProjectContext";
 
-const CreateProject = ({
-  title,
-  projectData,
-  setProjectData,
-  guestMode,
-  edit,
-}) => {
+const CreateProject = ({ title, edit }) => {
   let { id } = useParams();
   const { user } = useContext(UserContext);
+  const { project } = useContext(ProjectContext);
+  const { guest } = useContext(GuestContext);
   const [dataObject, setDataObject] = useState({
     proyectName: "",
     releaseDate: "",
@@ -41,45 +39,51 @@ const CreateProject = ({
   useEffect(() => {
     let pageItems = document.getElementById("projectID");
     let selectItems = document.querySelectorAll(".form-group > select");
-    if (projectData) {
-      setDataObject(projectData);
-      if (projectData.studentMember) {
+    if (project) {
+      setDataObject(project);
+      if (project.studentMember) {
         setAddStudent(
-          Object.keys(projectData.studentMember).map((key) => [
-            projectData.studentMember[key],
+          Object.keys(project.studentMember).map((key) => [
+            project.studentMember[key],
           ])
         );
       }
-      if (projectData.teacherMember) {
+      if (project.teacherMember) {
         setAddTeacher(
-          Object.keys(projectData.teacherMember).map((key) => [
-            projectData.teacherMember[key],
+          Object.keys(project.teacherMember).map((key) => [
+            project.teacherMember[key],
           ])
         );
       }
     }
 
-    if (projectData) {
-      if (projectData.creatorID !== user.employeeNumber) {
-        for (let i = 0, len = pageItems.length; i < len; ++i) {
+    if (project) {
+      if (user.employeeNumber && project.creatorID) {
+        if (project.creatorID.toString() !== user.employeeNumber.toString()) {
+          console.log(project.creatorID, user.employeeNumber);
+          for (let i = 0, len = pageItems.length; i < len; ++i) {
+            pageItems.elements[i].readOnly = true;
+          }
+          for (let i = 0; i < selectItems.length; ++i) {
+            selectItems[i].setAttribute("disabled", "");
+          }
+        }
+        if (project.creatorID === user.employeeNumber) {
+          for (let i = 0, len = pageItems.elements.length; i < len; ++i) {
+            pageItems.elements[i].readOnly = false;
+          }
+        }
+      }
+      if (guest) {
+        for (let i = 0, len = pageItems.elements.length; i < len; ++i) {
           pageItems.elements[i].readOnly = true;
         }
         for (let i = 0; i < selectItems.length; ++i) {
           selectItems[i].setAttribute("disabled", "");
         }
       }
-      if (projectData.creatorID === user.employeeNumber) {
-        for (let i = 0, len = pageItems.elements.length; i < len; ++i) {
-          pageItems.elements[i].readOnly = false;
-        }
-      }
-      if (guestMode) {
-        for (let i = 0, len = pageItems.elements.length; i < len; ++i) {
-          pageItems.elements[i].readOnly = true;
-        }
-      }
     }
-  }, [projectData, guestMode, user]);
+  }, [project, guest, user]);
 
   const [addStudent, setAddStudent] = useState([]);
   const [addTeacher, setAddTeacher] = useState([]);
@@ -153,11 +157,11 @@ const CreateProject = ({
           .putProject(dataObject)
           .then(() => {
             // Use an algorithm that checks for differences in both objects and erase the differences from s3
-            for (var key in projectData.projectFileName) {
+            for (var key in project.projectFileName) {
               if (!dataObject.projectFileName.hasOwnProperty(`${key}`)) {
                 apis.deleteDocument({
                   _id: id,
-                  projectFileName: projectData.projectFileName[key],
+                  projectFileName: project.projectFileName[key],
                 });
               }
             }
@@ -434,12 +438,11 @@ const CreateProject = ({
                   <div className="form-row">
                     <div className="col">
                       <div className="form-group">
-                        {projectData ? (
+                        {project ? (
                           <AddDoc
                             projectFileName={dataObject.projectFileName}
-                            savedFiles={projectData.projectFileName}
+                            savedFiles={project.projectFileName}
                             setDataObject={setDataObject}
-                            guestMode={guestMode}
                             setDocumentUploads={setDocumentUploads}
                             documentUploads={documentUploads}
                           />
@@ -448,7 +451,6 @@ const CreateProject = ({
                             projectFileName={dataObject.projectFileName}
                             savedFiles={false}
                             setDataObject={setDataObject}
-                            guestMode={guestMode}
                             setDocumentUploads={setDocumentUploads}
                             documentUploads={documentUploads}
                           />
@@ -569,7 +571,6 @@ const CreateProject = ({
                         setDataObject={setDataObject}
                         index={index}
                         addStudent={addStudent}
-                        guestMode={guestMode}
                       />
                     );
                   } else {
@@ -584,7 +585,6 @@ const CreateProject = ({
                         setDataObject={setDataObject}
                         index={index}
                         addStudent={addStudent}
-                        guestMode={guestMode}
                       />
                     );
                   }
@@ -619,7 +619,6 @@ const CreateProject = ({
                         setDataObject={setDataObject}
                         index={index}
                         addTeacher={addTeacher}
-                        guestMode={guestMode}
                       />
                     );
                   } else {
@@ -634,7 +633,6 @@ const CreateProject = ({
                         setDataObject={setDataObject}
                         index={index}
                         addTeacher={addTeacher}
-                        guestMode={guestMode}
                       />
                     );
                   }
@@ -642,9 +640,9 @@ const CreateProject = ({
               </div>
             </div>
           </div>
-          {guestMode ? (
+          {guest ? (
             <div className="form-group d-flex justify-content-around mt-4">
-              {projectData ? (
+              {project ? (
                 <button
                   className="btn btn-outline-primary text-capitalize font-weight-bold"
                   type="button"
@@ -658,8 +656,9 @@ const CreateProject = ({
             </div>
           ) : (
             <div className="form-group d-flex justify-content-around mt-4">
-              {projectData ? (
-                projectData.creatorID === user.employeeNumber ? (
+              {project.creatorID ? (
+                project.creatorID.toString() ===
+                user.employeeNumber.toString() ? (
                   <button
                     id="proyectBtn"
                     className="btn btn-outline-primary text-capitalize font-weight-bold"
@@ -681,7 +680,7 @@ const CreateProject = ({
                   Guardar datos
                 </button>
               )}
-              {projectData ? (
+              {project ? (
                 <button
                   className="btn btn-outline-primary text-capitalize font-weight-bold"
                   type="button"
@@ -693,8 +692,9 @@ const CreateProject = ({
                 <span className="d-none" />
               )}
 
-              {projectData ? (
-                projectData.creatorID === user.employeeNumber ? (
+              {project.creatorID ? (
+                project.creatorID.toString() ===
+                user.employeeNumber.toString() ? (
                   <button
                     onClick={deleteProject}
                     id="deleteBtn"

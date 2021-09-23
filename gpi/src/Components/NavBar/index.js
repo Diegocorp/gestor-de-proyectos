@@ -11,10 +11,12 @@ import {
   faTable,
   faEdit,
 } from "@fortawesome/free-solid-svg-icons";
+import { GuestContext } from "../../Utils/GuestContext";
 
-const NavBar = ({ guestMode }) => {
+const NavBar = () => {
   const { size } = useContext(SizeContext);
   let { userID } = useParams();
+  const { guest } = useContext(GuestContext);
 
   const fullWidth = { width: "15em", minHeight: "100%", height: "100%" };
   const reduced = { width: "7em", minHeight: "100%", height: "100%" };
@@ -30,7 +32,7 @@ const NavBar = ({ guestMode }) => {
       <div className="container-fluid d-flex flex-column p-0">
         <Link
           className="navbar-brand text-justify d-flex justify-content-center align-items-center sidebar-brand m-0"
-          to={guestMode ? `/guest/statistics` : `/user/${userID}/statistics`}
+          to={guest ? `/guest/statistics` : `/user/${userID}/statistics`}
         >
           <div className="sidebar-brand-icon rotate-n-0">
             <img id="iconSup" src={TecLogo} alt="" />
@@ -48,10 +50,15 @@ const NavBar = ({ guestMode }) => {
             icon={faTachometerAlt}
             title="Estadisticas"
           />
-          <NavItem guestMode={guestMode} id="me" icon={faUser} title="Perfil" />
+          <NavItem
+            guest={guest ? true : false}
+            id="me"
+            icon={faUser}
+            title="Perfil"
+          />
           <NavItem id="projects" icon={faTable} title="Proyectos" />
           <NavItem
-            guestMode={guestMode}
+            guest={guest ? true : false}
             id="create"
             icon={faEdit}
             title="Gestor de Proyectos"

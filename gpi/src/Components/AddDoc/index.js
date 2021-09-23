@@ -3,25 +3,26 @@ import DocumentButton from "../DocumentButton";
 import "./styles.css";
 import { UserContext } from "../../Utils/UserContext";
 import { ProjectContext } from "../../Utils/ProjectContext";
+import { GuestContext } from "../../Utils/GuestContext";
 
 const AddDoc = ({
   setDocumentUploads,
   documentUploads,
   projectFileName,
-  guestMode,
   setDataObject,
   savedFiles,
 }) => {
   const { user } = useContext(UserContext);
   const { project } = useContext(ProjectContext);
+  const { guest } = useContext(GuestContext);
 
   useEffect(() => {
-    if (user && !guestMode) {
+    if (user === false && guest === false) {
       if (user.employeeNumber !== project.creatorID) {
         document.getElementById("fileButton").elements[0].readOnly = true;
       }
     }
-  }, []);
+  }, [guest, user, project.creatorID]);
   const buttonClick = () => {
     document.querySelector(`#hiddenFile`).click();
   };
@@ -45,7 +46,7 @@ const AddDoc = ({
   return (
     <div>
       <div>
-        {guestMode ? (
+        {guest ? (
           <span></span>
         ) : (
           <input
@@ -68,7 +69,6 @@ const AddDoc = ({
                     projectFileName={projectFileName}
                     documentUploads={documentUploads}
                     savedFiles={savedFiles}
-                    guestMode={guestMode}
                     setDocumentUploads={setDocumentUploads}
                     setDataObject={setDataObject}
                   />
@@ -102,7 +102,6 @@ const AddDoc = ({
                     projectFileName={projectFileName}
                     documentUploads={documentUploads}
                     savedFiles={savedFiles}
-                    guestMode={guestMode}
                     setDocumentUploads={setDocumentUploads}
                     setDataObject={setDataObject}
                   />
