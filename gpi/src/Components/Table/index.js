@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import apis from "../../API";
@@ -114,18 +114,20 @@ const CustomTable = ({
   setToggleUserProjects,
   toggleUserProjects,
 }) => {
-  const { setProject } = useContext(ProjectContext);
   const history = useHistory();
+  const { setProject } = useContext(ProjectContext);
   let { userID } = useParams();
+
+  useEffect(() => {}, []);
 
   const handleRowClick = async (id) => {
     try {
       const payload = {
         id: id,
       };
-      await apis.getProjectById(payload).then((result) => {
-        setProject(result);
-      });
+      const result = await apis.getProjectById(payload);
+      //console.log(result);
+      setProject(result);
     } catch (error) {
       alert(error);
     }

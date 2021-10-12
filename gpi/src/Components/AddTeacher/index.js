@@ -65,7 +65,7 @@ const AddTeacher = ({
     } else {
       handleDelete(dataKey);
       let copyData = dataObject.teacherMember;
-      copyData = copyData.splice(index, 1);
+      delete copyData[index];
       setDataObject((prevState) => ({
         ...prevState,
         teacherMember: copyData,

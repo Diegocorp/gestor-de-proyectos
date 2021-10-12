@@ -33,14 +33,33 @@ const CreateProject = ({ title, edit }) => {
     studentMember: {},
     teacherMember: {},
     projectFileName: {},
+    creatorID: "",
   });
   const [documentUploads, setDocumentUploads] = useState({});
+  const [addStudent, setAddStudent] = useState([]);
+  const [addTeacher, setAddTeacher] = useState([]);
 
   useEffect(() => {
     let pageItems = document.getElementById("projectID");
     let selectItems = document.querySelectorAll(".form-group > select");
-    if (project) {
+    // console.log(project);
+    if (Object.keys(project).length > 0) {
       setDataObject(project);
+      if (!project.creatorID) {
+        setDataObject((prev) => ({
+          ...prev,
+          typeProyect: "Desarrollo de software",
+          objectiveProject: "Objetivo del proyecto",
+          statusProject: "Cancelado",
+        }));
+      }
+      // if (dataObject.studentMember) {
+      //   setAddStudent(
+      //     Object.keys(dataObject.studentMember).map((key) => [
+      //       dataObject.studentMember[key],
+      //     ])
+      //   );
+      // }
       if (project.studentMember) {
         setAddStudent(
           Object.keys(project.studentMember).map((key) => [
@@ -48,6 +67,13 @@ const CreateProject = ({ title, edit }) => {
           ])
         );
       }
+      // if (dataObject.teacherMember) {
+      //   setAddTeacher(
+      //     Object.keys(dataObject.teacherMember).map((key) => [
+      //       dataObject.teacherMember[key],
+      //     ])
+      //   );
+      // }
       if (project.teacherMember) {
         setAddTeacher(
           Object.keys(project.teacherMember).map((key) => [
@@ -60,7 +86,6 @@ const CreateProject = ({ title, edit }) => {
     if (project) {
       if (user.employeeNumber && project.creatorID) {
         if (project.creatorID.toString() !== user.employeeNumber.toString()) {
-          console.log(project.creatorID, user.employeeNumber);
           for (let i = 0, len = pageItems.length; i < len; ++i) {
             pageItems.elements[i].readOnly = true;
           }
@@ -83,10 +108,14 @@ const CreateProject = ({ title, edit }) => {
         }
       }
     }
-  }, [project, guest, user]);
 
-  const [addStudent, setAddStudent] = useState([]);
-  const [addTeacher, setAddTeacher] = useState([]);
+    if (!project.creatorID && user.employeeNumber) {
+      setDataObject((prev) => ({
+        ...prev,
+        creatorID: user.employeeNumber,
+      }));
+    }
+  }, [guest, user]);
 
   const handleType = (e) => {
     const { id, value } = e.target;
@@ -101,7 +130,7 @@ const CreateProject = ({ title, edit }) => {
   }
 
   function deleteStudent(key) {
-    setAddStudent(addStudent.filter((item) => item !== key));
+    setAddStudent(() => addStudent.filter((n) => n !== key));
   }
 
   function handleTeachers(key) {
@@ -113,15 +142,33 @@ const CreateProject = ({ title, edit }) => {
   }
 
   const onSubmit = async () => {
-    try {
-      //Structure Document form data to upload file
-      setDataObject((prevState) => ({
-        ...prevState,
-        creatorID: user.employeeNumber,
-      }));
-      if (!edit) {
-        //project info upload to database then upload document
+    Object.keys(dataObject.studentMember)
+      .map((value) => {
+        if (
+          !dataObject.studentMember[value][0] ||
+          !dataObject.studentMember[value][1]
+        ) {
+          delete dataObject.studentMember[value];
+        }
+      })
+      .filter((n) => n);
 
+    Object.keys(dataObject.teacherMember)
+      .map((value) => {
+        if (
+          !dataObject.teacherMember[value][0] ||
+          !dataObject.teacherMember[value][1] ||
+          !dataObject.teacherMember[value][2]
+        ) {
+          delete dataObject.teacherMember[value];
+        }
+      })
+      .filter((n) => n);
+
+    try {
+      if (!edit) {
+        //console.log(dataObject);
+        //project info upload to database then upload document
         apis
           .postProject(dataObject)
           .then((response) => {
@@ -438,7 +485,7 @@ const CreateProject = ({ title, edit }) => {
                   <div className="form-row">
                     <div className="col">
                       <div className="form-group">
-                        {project ? (
+                        {project.projectFileName ? (
                           <AddDoc
                             projectFileName={dataObject.projectFileName}
                             savedFiles={project.projectFileName}
@@ -573,21 +620,20 @@ const CreateProject = ({ title, edit }) => {
                         addStudent={addStudent}
                       />
                     );
-                  } else {
-                    return (
-                      <AddStudent
-                        handleAdd={handleStudents}
-                        handleDelete={deleteStudent}
-                        trigger={false}
-                        key={value}
-                        dataKey={value}
-                        dataObject={dataObject}
-                        setDataObject={setDataObject}
-                        index={index}
-                        addStudent={addStudent}
-                      />
-                    );
                   }
+                  return (
+                    <AddStudent
+                      handleAdd={handleStudents}
+                      handleDelete={deleteStudent}
+                      trigger={false}
+                      key={value}
+                      dataKey={value}
+                      dataObject={dataObject}
+                      setDataObject={setDataObject}
+                      index={index}
+                      addStudent={addStudent}
+                    />
+                  );
                 })}
               </div>
             </div>
