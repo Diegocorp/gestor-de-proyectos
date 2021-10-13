@@ -1,12 +1,14 @@
 /* eslint-disable no-undef */
-import React from "react";
+import React, { useContext } from "react";
 import "./styles.css";
 import TecLogo from "../../Assets/img/tecnm-1.png";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import AuthForm from "../../Components/AuthForm";
 import { Link } from "react-router-dom";
+import { GuestContext } from "../../Utils/GuestContext";
 
-const Login = ({ setGuestMode }) => {
+const Login = () => {
+  const { setGuest } = useContext(GuestContext);
   return (
     <Container fluid>
       <Row className="justify-content-center">
@@ -18,7 +20,7 @@ const Login = ({ setGuestMode }) => {
                 <img id="iconLogo" src={TecLogo} alt="" />
               </div>
               {/* Account login field */}
-              <AuthForm setGuestMode={setGuestMode} />
+              <AuthForm />
               {/* Guest login */}
               <div className="col-lg-4 guest-box">
                 <div className="p-5 section-guest">
@@ -30,7 +32,7 @@ const Login = ({ setGuestMode }) => {
                       id="guestBtn"
                       className="btn btn-primary btn-block text-white btn-user rounded-pill py-2"
                       role="button"
-                      onClick={() => setGuestMode(true)}
+                      onClick={() => setGuest(true)}
                       to="/guest/statistics"
                     >
                       Entrar

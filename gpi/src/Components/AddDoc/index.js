@@ -1,74 +1,124 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import DocumentButton from "../DocumentButton";
 import "./styles.css";
+import { UserContext } from "../../Utils/UserContext";
+import { ProjectContext } from "../../Utils/ProjectContext";
+import { GuestContext } from "../../Utils/GuestContext";
 
 const AddDoc = ({
-  setDocumentUpload,
-  documentUpload,
+  setDocumentUploads,
+  documentUploads,
   projectFileName,
-  guestMode,
   setDataObject,
+  savedFiles,
 }) => {
+  const { user } = useContext(UserContext);
+  const { project } = useContext(ProjectContext);
+  const { guest } = useContext(GuestContext);
+
+  useEffect(() => {
+    if (user === false && guest === false) {
+      if (user.employeeNumber !== project.creatorID) {
+        document.getElementById("fileButton").elements[0].readOnly = true;
+      }
+    }
+  }, [guest, user, project.creatorID]);
   const buttonClick = () => {
     document.querySelector(`#hiddenFile`).click();
   };
 
   const onFileChange = (e) => {
-    setDocumentUpload(e.target.files[0]);
-    const fileName = e.target.files[0].name;
+    let ran = `FB${Math.ceil(Math.random() * 1000)}`;
+    const file = e.target.files[0];
+    setDocumentUploads((prev) => ({
+      ...prev,
+      [ran]: file,
+    }));
     setDataObject((prev) => ({
       ...prev,
-      projectFileName: fileName,
+      projectFileName: {
+        ...prev.projectFileName,
+        [ran]: file.name,
+      },
     }));
   };
 
   return (
-    <span>
-      {documentUpload.name || projectFileName ? (
-        <span>
+    <div>
+      <div>
+        {guest ? (
+          <span></span>
+        ) : (
           <input
-            disabled
             id="fileButton"
-            type="button"
-            value="Subir documento"
-            onClick={buttonClick}
-          />
-          <input
-            type="file"
-            style={{ display: "none" }}
-            id="hiddenFile"
-            name="hiddenFile"
-            onChange={onFileChange}
-          />
-
-          <DocumentButton
-            projectFileName={projectFileName}
-            documentUpload={documentUpload}
-            guestMode={guestMode}
-            setDocumentUpload={setDocumentUpload}
-            selectFile={buttonClick}
-            setDataObject={setDataObject}
-          />
-        </span>
-      ) : (
-        <span>
-          <input
-            disabled={guestMode}
             className="btn btn-outline-primary"
-            id="fileButton"
             type="button"
             value="Subir documento"
             onClick={buttonClick}
           />
-          <input
-            type="file"
-            style={{ display: "none" }}
-            id="hiddenFile"
-            onChange={onFileChange}
-          />
-        </span>
-      )}
-    </span>
+        )}
+        <div className="mt-3">
+          {savedFiles ? (
+            <div>
+              {Object.keys(savedFiles).map((key, index) => {
+                return (
+                  <DocumentButton
+                    key={key}
+                    identifier={`${key}`}
+                    className={`${key}`}
+                    projectFileName={projectFileName}
+                    documentUploads={documentUploads}
+                    savedFiles={savedFiles}
+                    setDocumentUploads={setDocumentUploads}
+                    setDataObject={setDataObject}
+                  />
+                );
+              })}
+              <input
+                type="file"
+                style={{ display: "none" }}
+                id="hiddenFile"
+                name="hiddenFile"
+                onChange={onFileChange}
+              />
+            </div>
+          ) : (
+            <input
+              type="file"
+              style={{ display: "none" }}
+              id="hiddenFile"
+              name="hiddenFile"
+              onChange={onFileChange}
+            />
+          )}
+          {documentUploads ? (
+            <div>
+              {Object.keys(documentUploads).map((key, index) => {
+                return (
+                  <DocumentButton
+                    key={key}
+                    identifier={`${key}`}
+                    className={`${key}`}
+                    projectFileName={projectFileName}
+                    documentUploads={documentUploads}
+                    savedFiles={savedFiles}
+                    setDocumentUploads={setDocumentUploads}
+                    setDataObject={setDataObject}
+                  />
+                );
+              })}
+              <input
+                type="file"
+                style={{ display: "none" }}
+                id="hiddenFile"
+                name="hiddenFile"
+                onChange={onFileChange}
+              />
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </div>
   );
 };
 

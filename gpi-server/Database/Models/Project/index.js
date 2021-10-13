@@ -57,7 +57,7 @@ const newProyectSchema = new Schema({
     required: true,
   },
   projectFileName: {
-    type: String,
+    type: Object,
   },
   creatorID: {
     type: String,

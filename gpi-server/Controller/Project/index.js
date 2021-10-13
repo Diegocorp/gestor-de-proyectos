@@ -127,7 +127,7 @@ getProjectsByCreator = async (req, res) => {
     if (!projects.length) {
       return res
         .status(404)
-        .json({ success: false, error: "Proyectos no fuerone encontrados" });
+        .json({ success: false, error: "Proyectos no fueron encontrados" });
     }
     return res.status(200).json({ success: true, data: projects });
   }).catch((err) => console.log(err));
@@ -141,7 +141,7 @@ getProjects = async (req, res) => {
     if (!projects.length) {
       return res
         .status(404)
-        .json({ success: false, error: "Proyect0 no fue encontrado" });
+        .json({ success: false, error: "Proyectos no fueron encontrado" });
     }
     return res.status(200).json({ success: true, data: projects });
   }).catch((err) => console.log(err));

@@ -1,74 +1,114 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faTrash, faCopy } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 import apis from "../../API";
 import axios from "axios";
 import Modal from "../Modal";
+import { GuestContext } from "../../Utils/GuestContext";
 
 const DocumentButton = ({
-  documentUpload,
-  guestMode,
-  setDocumentUpload,
-  selectFile,
+  identifier,
+  documentUploads,
+  setDocumentUploads,
   projectFileName,
   setDataObject,
+  savedFiles,
 }) => {
   let { id } = useParams();
   const [modal, setModal] = useState(false);
+  const { guest } = useContext(GuestContext);
+
+  const fileChanged = (e) => {
+    let file = e.target.files[0];
+    setDocumentUploads((prev) => ({
+      ...prev,
+      [identifier]: file,
+    }));
+    setDataObject((prev) => ({
+      ...prev,
+      projectFileName: {
+        ...prev.projectFileName,
+        [identifier]: file.name,
+      },
+    }));
+  };
 
   const downloadFile = () => {
     const payload = {
       _id: id,
-      projectFileName: projectFileName,
+      projectFileName: projectFileName[identifier],
     };
-    apis.downloadDocument(payload).then((response) => {
-      axios
-        .get(`${response.data}`, {
-          responseType: "blob",
-        })
-        .then((response) => {
-          const url = window.URL.createObjectURL(
-            new Blob([response.data], {
-              type: response.headers["content-type"],
-            })
-          );
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", projectFileName);
-          document.body.appendChild(link);
-          link.click();
-        });
-    });
+    try {
+      apis.downloadDocument(payload).then((response) => {
+        axios
+          .get(`${response.data}`, {
+            responseType: "blob",
+          })
+          .then((response) => {
+            const url = window.URL.createObjectURL(
+              new Blob([response.data], {
+                type: response.headers["content-type"],
+              })
+            );
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", projectFileName[identifier]);
+            document.body.appendChild(link);
+            link.click();
+          });
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
-
   return (
-    <span className="ml-3">
+    <div className="mt-1 mb-1" id={`${identifier}__parent`}>
+      <input
+        type="file"
+        style={{ display: "none" }}
+        id={identifier}
+        name="hiddenFile"
+        onChange={fileChanged}
+        files={documentUploads[`${identifier}`]}
+      />
       <span id="file__span-container">
         <button
           id="fileBtnDrop"
           type="button"
-          className="w-25 btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
+          className="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
         >
           <span className="font-weight-bolder">
-            <u>{projectFileName || documentUpload.name}</u>
+            {
+              <u>
+                {savedFiles[`${identifier}`] ||
+                  documentUploads[`${identifier}`].name}
+              </u>
+            }
           </span>
           <span>•••</span>
         </button>
         <span className="dropdown-menu dropdown-menu-right">
-          {!guestMode ? (
-            <>
+          {documentUploads[identifier] ? (
+            <span></span>
+          ) : (
+            <span>
               {/* eslint-disable-next-line */}
-              <a className="dropdown-item" href="#" onClick={selectFile}>
+              <a className="dropdown-item" href="#" onClick={downloadFile}>
                 <div className="pl-1">
-                  <FontAwesomeIcon className="w-25 mr-1" icon={faCopy} />
-                  <span className="pr-3 w-50 text-left">Reemplazar</span>
+                  <FontAwesomeIcon className="w-25 mr-1" icon={faDownload} />
+                  <span className="pr-3 w-50 text-left">Descargar</span>
                 </div>
               </a>
+            </span>
+          )}
+
+          {!guest ? (
+            <>
               {/* eslint-disable-next-line */}
               <a
                 className="dropdown-item"
@@ -84,22 +124,18 @@ const DocumentButton = ({
           ) : (
             <div></div>
           )}
-          {/* eslint-disable-next-line */}
-          <a className="dropdown-item" href="#" onClick={downloadFile}>
-            <div className="pl-1">
-              <FontAwesomeIcon className="w-25 mr-1" icon={faDownload} />
-              <span className="pr-3 w-50 text-left">Descargar</span>
-            </div>
-          </a>
         </span>
       </span>
       <Modal
+        identifier={identifier}
         modal={modal}
         setModal={setModal}
-        setDocumentUpload={setDocumentUpload}
+        projectFileName={projectFileName}
+        documentUploads={documentUploads}
+        setDocumentUploads={setDocumentUploads}
         setDataObject={setDataObject}
       ></Modal>
-    </span>
+    </div>
   );
 };
 

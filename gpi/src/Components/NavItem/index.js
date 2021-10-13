@@ -2,10 +2,12 @@ import React, { useContext } from "react";
 import { SizeContext } from "../../Utils/SizeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useParams } from "react-router-dom";
+import { ProjectContext } from "../../Utils/ProjectContext";
 
 const NavItem = (props) => {
   let { userID, page } = useParams();
   const { size } = useContext(SizeContext);
+  const { setProject } = useContext(ProjectContext);
   const styleSelected = "nav-link active font-weight-bold";
   const styleUnSelected = "nav-link";
   const reducedNav =
@@ -15,7 +17,10 @@ const NavItem = (props) => {
     <li
       className="nav-item mt-2 "
       role="presentation"
-      style={props.guestMode ? { display: "none" } : null}
+      style={props.guest ? { display: "none" } : null}
+      onClick={() => {
+        setProject({});
+      }}
     >
       <Link
         id={props.id}

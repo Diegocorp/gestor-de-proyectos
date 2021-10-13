@@ -10,6 +10,7 @@ const Projects = () => {
   const [toggleUserProjects, setToggleUserProjects] = useState(false);
   const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     async function fetchData() {
       toggleUserProjects

@@ -42,10 +42,10 @@ router.post(
 );
 router.get("/upload/users/pictures/:fileName", AWS.getImage);
 
-//Project file upload and fetch
+//Project file upload, fetch & delete
 router.post(
   "/upload/projects/:id",
-  AWS.uploadDocument.array("document", 1),
+  AWS.uploadDocument.array("document"),
   async (req, res) => {
     console.log("Project file uploaded!");
   }

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import Table from "react-bootstrap/Table";
+import apis from "../../API";
 import {
   useTable,
   usePagination,
@@ -9,6 +10,7 @@ import {
   useAsyncDebounce,
 } from "react-table";
 import { matchSorter } from "match-sorter";
+import { ProjectContext } from "../../Utils/ProjectContext";
 import "./styles.css";
 
 function GlobalFilter({
@@ -113,9 +115,22 @@ const CustomTable = ({
   toggleUserProjects,
 }) => {
   const history = useHistory();
+  const { setProject } = useContext(ProjectContext);
   let { userID } = useParams();
 
+  useEffect(() => {}, []);
+
   const handleRowClick = async (id) => {
+    try {
+      const payload = {
+        id: id,
+      };
+      const result = await apis.getProjectById(payload);
+      //console.log(result);
+      setProject(result);
+    } catch (error) {
+      alert(error);
+    }
     history.push(
       userID ? `/user/${userID}/project/${id}` : `/guest/project/${id}`
     );

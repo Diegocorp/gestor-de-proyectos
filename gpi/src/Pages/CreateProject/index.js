@@ -1,24 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./styles.css";
+import apis from "../../API";
 import AddStudent from "../../Components/AddStudent";
 import AddTeacher from "../../Components/AddTeacher";
-import apis from "../../API";
 import AddDoc from "../../Components/AddDoc";
 import { useParams } from "react-router-dom";
 import "react-notifications-component/dist/theme.css";
 import { store } from "react-notifications-component";
 import { UserContext } from "../../Utils/UserContext";
 import { jsPDF } from "jspdf";
+import { GuestContext } from "../../Utils/GuestContext";
+import { ProjectContext } from "../../Utils/ProjectContext";
 
-const CreateProject = ({
-  title,
-  projectData,
-  setProjectData,
-  guestMode,
-  edit,
-}) => {
+const CreateProject = ({ title, edit }) => {
   let { id } = useParams();
   const { user } = useContext(UserContext);
+  const { project } = useContext(ProjectContext);
+  const { guest } = useContext(GuestContext);
   const [dataObject, setDataObject] = useState({
     proyectName: "",
     releaseDate: "",
@@ -34,41 +32,90 @@ const CreateProject = ({
     lastNameContact: "",
     studentMember: {},
     teacherMember: {},
-    projectFileName: "",
+    projectFileName: {},
+    creatorID: "",
   });
-  const [documentUpload, setDocumentUpload] = useState(new File([""], ""));
-
-  useEffect(() => {
-    if (projectData) {
-      setDataObject(projectData);
-      if (projectData.studentMember) {
-        setAddStudent(
-          Object.keys(projectData.studentMember).map((key) => [
-            projectData.studentMember[key],
-          ])
-        );
-      }
-      if (projectData.teacherMember) {
-        setAddTeacher(
-          Object.keys(projectData.teacherMember).map((key) => [
-            projectData.teacherMember[key],
-          ])
-        );
-      }
-    }
-    if (guestMode) {
-      for (
-        var i = 0, len = document.getElementById("projectID").elements.length;
-        i < len;
-        ++i
-      ) {
-        document.getElementById("projectID").elements[i].readOnly = true;
-      }
-    }
-  }, [projectData, guestMode]);
-
+  const [documentUploads, setDocumentUploads] = useState({});
   const [addStudent, setAddStudent] = useState([]);
   const [addTeacher, setAddTeacher] = useState([]);
+
+  useEffect(() => {
+    let pageItems = document.getElementById("projectID");
+    let selectItems = document.querySelectorAll(".form-group > select");
+    // console.log(project);
+    if (Object.keys(project).length > 0) {
+      setDataObject(project);
+      if (!project.creatorID) {
+        setDataObject((prev) => ({
+          ...prev,
+          typeProyect: "Desarrollo de software",
+          objectiveProject: "Objetivo del proyecto",
+          statusProject: "Cancelado",
+        }));
+      }
+      // if (dataObject.studentMember) {
+      //   setAddStudent(
+      //     Object.keys(dataObject.studentMember).map((key) => [
+      //       dataObject.studentMember[key],
+      //     ])
+      //   );
+      // }
+      if (project.studentMember) {
+        setAddStudent(
+          Object.keys(project.studentMember).map((key) => [
+            project.studentMember[key],
+          ])
+        );
+      }
+      // if (dataObject.teacherMember) {
+      //   setAddTeacher(
+      //     Object.keys(dataObject.teacherMember).map((key) => [
+      //       dataObject.teacherMember[key],
+      //     ])
+      //   );
+      // }
+      if (project.teacherMember) {
+        setAddTeacher(
+          Object.keys(project.teacherMember).map((key) => [
+            project.teacherMember[key],
+          ])
+        );
+      }
+    }
+
+    if (project) {
+      if (user.employeeNumber && project.creatorID) {
+        if (project.creatorID.toString() !== user.employeeNumber.toString()) {
+          for (let i = 0, len = pageItems.length; i < len; ++i) {
+            pageItems.elements[i].readOnly = true;
+          }
+          for (let i = 0; i < selectItems.length; ++i) {
+            selectItems[i].setAttribute("disabled", "");
+          }
+        }
+        if (project.creatorID === user.employeeNumber) {
+          for (let i = 0, len = pageItems.elements.length; i < len; ++i) {
+            pageItems.elements[i].readOnly = false;
+          }
+        }
+      }
+      if (guest) {
+        for (let i = 0, len = pageItems.elements.length; i < len; ++i) {
+          pageItems.elements[i].readOnly = true;
+        }
+        for (let i = 0; i < selectItems.length; ++i) {
+          selectItems[i].setAttribute("disabled", "");
+        }
+      }
+    }
+
+    if (!project.creatorID && user.employeeNumber) {
+      setDataObject((prev) => ({
+        ...prev,
+        creatorID: user.employeeNumber,
+      }));
+    }
+  }, [guest, user]);
 
   const handleType = (e) => {
     const { id, value } = e.target;
@@ -83,7 +130,7 @@ const CreateProject = ({
   }
 
   function deleteStudent(key) {
-    setAddStudent(addStudent.filter((item) => item !== key));
+    setAddStudent(() => addStudent.filter((n) => n !== key));
   }
 
   function handleTeachers(key) {
@@ -95,21 +142,42 @@ const CreateProject = ({
   }
 
   const onSubmit = async () => {
+    Object.keys(dataObject.studentMember)
+      .map((value) => {
+        if (
+          !dataObject.studentMember[value][0] ||
+          !dataObject.studentMember[value][1]
+        ) {
+          delete dataObject.studentMember[value];
+        }
+      })
+      .filter((n) => n);
+
+    Object.keys(dataObject.teacherMember)
+      .map((value) => {
+        if (
+          !dataObject.teacherMember[value][0] ||
+          !dataObject.teacherMember[value][1] ||
+          !dataObject.teacherMember[value][2]
+        ) {
+          delete dataObject.teacherMember[value];
+        }
+      })
+      .filter((n) => n);
+
     try {
-      //Structure Document form data to upload file
-      const formData = new FormData();
-      formData.append("fileName", dataObject.projectFileName);
-      formData.append("document", documentUpload);
       if (!edit) {
+        //console.log(dataObject);
         //project info upload to database then upload document
-        setDataObject((prevState) => ({
-          ...prevState,
-          creatorID: user.employeeNumber,
-        }));
         apis
           .postProject(dataObject)
           .then((response) => {
-            apis.postDocument({ id: response.data.id, formData });
+            for (var key in documentUploads) {
+              let formData = new FormData();
+              formData.append("fileName", documentUploads[key].name);
+              formData.append("document", documentUploads[key]);
+              apis.postDocument({ id: response.data.id, formData });
+            }
           })
           .then(() => {
             store.addNotification({
@@ -135,18 +203,23 @@ const CreateProject = ({
         await apis
           .putProject(dataObject)
           .then(() => {
-            if (
-              projectData.projectFileName !== dataObject.projectFileName &&
-              projectData.projectFileName
-            ) {
-              apis.deleteDocument({
-                _id: id,
-                projectFileName: projectData.projectFileName,
-              });
+            // Use an algorithm that checks for differences in both objects and erase the differences from s3
+            for (var key in project.projectFileName) {
+              if (!dataObject.projectFileName.hasOwnProperty(`${key}`)) {
+                apis.deleteDocument({
+                  _id: id,
+                  projectFileName: project.projectFileName[key],
+                });
+              }
             }
           })
           .then(() => {
-            apis.postDocument({ id: id, formData });
+            for (var key in documentUploads) {
+              let formData = new FormData();
+              formData.append("fileName", documentUploads[key].name);
+              formData.append("document", documentUploads[key]);
+              apis.postDocument({ id: id, formData });
+            }
           })
           .then(() => {
             store.addNotification({
@@ -308,7 +381,7 @@ const CreateProject = ({
                   </div>
                 </div>
               </div>
-              <div className="form-row">
+              <div id="selectArea" className="form-row">
                 <div className="col">
                   <div className="form-group">
                     <label htmlFor="first_name">
@@ -318,7 +391,7 @@ const CreateProject = ({
                       id="typeProyect"
                       value={dataObject.typeProyect}
                       onChange={handleType}
-                      className="border rounded form-control"
+                      className="border rounded form-control selectArea"
                       style={{
                         color: "rgb(110, 112, 126)",
                         padding: "6px 12px",
@@ -347,7 +420,7 @@ const CreateProject = ({
                       id="objectiveProject"
                       value={dataObject.objectiveProject}
                       onChange={handleType}
-                      className="border rounded form-control"
+                      className="border rounded form-control selectArea"
                       style={{
                         color: "rgb(110, 112, 126)",
                         padding: "6px 12px",
@@ -370,7 +443,7 @@ const CreateProject = ({
                       id="statusProject"
                       value={dataObject.statusProject}
                       onChange={handleType}
-                      className="border rounded form-control"
+                      className="border rounded form-control selectArea"
                       style={{
                         color: "rgb(110, 112, 126)",
                         padding: "6px 12px",
@@ -412,13 +485,23 @@ const CreateProject = ({
                   <div className="form-row">
                     <div className="col">
                       <div className="form-group">
-                        <AddDoc
-                          projectFileName={dataObject.projectFileName}
-                          setDataObject={setDataObject}
-                          guestMode={guestMode}
-                          setDocumentUpload={setDocumentUpload}
-                          documentUpload={documentUpload}
-                        />
+                        {project.projectFileName ? (
+                          <AddDoc
+                            projectFileName={dataObject.projectFileName}
+                            savedFiles={project.projectFileName}
+                            setDataObject={setDataObject}
+                            setDocumentUploads={setDocumentUploads}
+                            documentUploads={documentUploads}
+                          />
+                        ) : (
+                          <AddDoc
+                            projectFileName={dataObject.projectFileName}
+                            savedFiles={false}
+                            setDataObject={setDataObject}
+                            setDocumentUploads={setDocumentUploads}
+                            documentUploads={documentUploads}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
@@ -535,25 +618,22 @@ const CreateProject = ({
                         setDataObject={setDataObject}
                         index={index}
                         addStudent={addStudent}
-                        guestMode={guestMode}
-                      />
-                    );
-                  } else {
-                    return (
-                      <AddStudent
-                        handleAdd={handleStudents}
-                        handleDelete={deleteStudent}
-                        trigger={false}
-                        key={value}
-                        dataKey={value}
-                        dataObject={dataObject}
-                        setDataObject={setDataObject}
-                        index={index}
-                        addStudent={addStudent}
-                        guestMode={guestMode}
                       />
                     );
                   }
+                  return (
+                    <AddStudent
+                      handleAdd={handleStudents}
+                      handleDelete={deleteStudent}
+                      trigger={false}
+                      key={value}
+                      dataKey={value}
+                      dataObject={dataObject}
+                      setDataObject={setDataObject}
+                      index={index}
+                      addStudent={addStudent}
+                    />
+                  );
                 })}
               </div>
             </div>
@@ -585,7 +665,6 @@ const CreateProject = ({
                         setDataObject={setDataObject}
                         index={index}
                         addTeacher={addTeacher}
-                        guestMode={guestMode}
                       />
                     );
                   } else {
@@ -600,7 +679,6 @@ const CreateProject = ({
                         setDataObject={setDataObject}
                         index={index}
                         addTeacher={addTeacher}
-                        guestMode={guestMode}
                       />
                     );
                   }
@@ -608,32 +686,84 @@ const CreateProject = ({
               </div>
             </div>
           </div>
-          {guestMode ? null : (
+          {guest ? (
             <div className="form-group d-flex justify-content-around mt-4">
-              <button
-                id="proyectBtn"
-                className="btn btn-outline-primary text-capitalize font-weight-bold"
-                type="button"
-                onClick={onSubmit}
-              >
-                Guardar datos
-              </button>
-              <button
-                className="btn btn-outline-primary text-capitalize font-weight-bold"
-                type="button"
-                onClick={() => createPDF()}
-              >
-                Descargar documento
-              </button>
-              <button
-                onClick={deleteProject}
-                id="deleteBtn"
-                className="btn btn-outline-danger text-capitalize font-weight-bold"
-                style={edit ? { display: "block" } : { display: "none" }}
-                type="button"
-              >
-                Eliminar Proyecto
-              </button>
+              {project ? (
+                <button
+                  className="btn btn-outline-primary text-capitalize font-weight-bold"
+                  type="button"
+                  onClick={() => createPDF()}
+                >
+                  Descargar documento
+                </button>
+              ) : (
+                <span className="d-none" />
+              )}
+            </div>
+          ) : (
+            <div className="form-group d-flex justify-content-around mt-4">
+              {project.creatorID ? (
+                project.creatorID.toString() ===
+                user.employeeNumber.toString() ? (
+                  <button
+                    id="proyectBtn"
+                    className="btn btn-outline-primary text-capitalize font-weight-bold"
+                    type="button"
+                    onClick={onSubmit}
+                  >
+                    Guardar datos
+                  </button>
+                ) : (
+                  <span className="d-none" />
+                )
+              ) : (
+                <button
+                  id="proyectBtn"
+                  className="btn btn-outline-primary text-capitalize font-weight-bold"
+                  type="button"
+                  onClick={onSubmit}
+                >
+                  Guardar datos
+                </button>
+              )}
+              {project ? (
+                <button
+                  className="btn btn-outline-primary text-capitalize font-weight-bold"
+                  type="button"
+                  onClick={() => createPDF()}
+                >
+                  Descargar documento
+                </button>
+              ) : (
+                <span className="d-none" />
+              )}
+
+              {project.creatorID ? (
+                project.creatorID.toString() ===
+                user.employeeNumber.toString() ? (
+                  <button
+                    onClick={deleteProject}
+                    id="deleteBtn"
+                    className="btn btn-outline-danger text-capitalize font-weight-bold"
+                    style={edit ? { display: "block" } : { display: "none" }}
+                    type="button"
+                  >
+                    Eliminar Proyecto
+                  </button>
+                ) : (
+                  <span className="d-none" />
+                )
+              ) : (
+                <button
+                  onClick={deleteProject}
+                  id="deleteBtn"
+                  className="btn btn-outline-danger text-capitalize font-weight-bold"
+                  style={edit ? { display: "block" } : { display: "none" }}
+                  type="button"
+                >
+                  Eliminar Proyecto
+                </button>
+              )}
             </div>
           )}
         </div>
