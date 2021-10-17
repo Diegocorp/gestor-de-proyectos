@@ -21,7 +21,7 @@ function SuggestionsForm() {
               <div className="form-row">
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="city">
+                    <label htmlFor="city" className="mb-3">
                       <strong>Comentarios u Observaciones</strong>
                     </label>
                     <textarea
@@ -32,12 +32,12 @@ function SuggestionsForm() {
                       style={{
                         padding: "6px 12px",
                         color: "rgb(110, 112, 126)",
-                        height: "100px",
+                        height: "280px",
                       }}
                     />
                     <button
                       type="submit"
-                      className="btn btn-primary text-capitalize font-weight-bold"
+                      className="btn btn-primary text-capitalize mt-3 font-weight-bold"
                       disabled={state.submitting}
                     >
                       Enviar
