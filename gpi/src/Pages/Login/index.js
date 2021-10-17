@@ -12,8 +12,8 @@ const Login = () => {
   return (
     <Container fluid>
       <Row className="justify-content-center">
-        <Col className="md-9 lg-12 xl-10">
-          <Card className="shadow-lg o-hidden border-0 my-5">
+        <Col className="md-9 lg-12 xl-18">
+          <Card className="shadow-lg o-hidden border-0 my-3">
             <Row>
               {/* Tecnm Image Logo */}
               <div className="col-lg-4 d-none d-lg-flex">
@@ -23,7 +23,7 @@ const Login = () => {
               <AuthForm />
               {/* Guest login */}
               <div className="col-lg-4 guest-box">
-                <div className="p-5 section-guest">
+                <div className="p-5 mb-0 section-guest">
                   <div className="text-center">
                     <h4 className="text-dark mb-4">¡Entrar como invitado!</h4>
                   </div>
