@@ -10,8 +10,8 @@
 }
 
 #usrImg {
-  width: 2em !important;
-  height: 2em !important;
+  width: 35px !important;
+  height: 35px !important;
   background-image: url("../../Assets/img/tecnm-1.png");
   background-size: contain;
   background-repeat: no-repeat;

@@ -1,8 +1,56 @@
-#collapseBtn{
-  padding: .75rem .75rem;
+#collapseBtn {
+  padding: 0.25rem 0.4rem;
 }
 
 #collapseBtn > span > svg {
   height: 1.25rem;
   width: 1.25rem;
+}
+
+#collapseBtn {
+  width: 35px;
+  border-radius: 100%;
+  height: 35px;
+}
+
+#burger {
+  color: #0275d8;
+}
+/* 
+.row [class*="d-"] {
+  transition: visible 0.5s ease-in-out;
+} */
+
+/* Menu sliding styles */
+
+/* header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 15
+}
+
+header #menu {
+    display: block;
+    height: 58px;
+    padding: 0 1.95em;
+}
+
+header #menu a {
+    position: relative;
+    z-index: 3;
+} */
+
+#Navbar__Container .open {
+  transition: -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease;
+  -webkit-transform: translateX(330px);
+  -ms-transform: translateX(330px);
+  transform: translateX(330px);
+}
+
+#Navbar__Container .close {
+  -webkit-transform: translateX(330px);
+  -ms-transform: translateX(330px);
+  transform: translateX(330px);
 }

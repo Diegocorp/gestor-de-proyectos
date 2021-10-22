@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { SizeContext } from "../../Utils/SizeContext";
-import TecLogo from "../../Assets/img/tecnm-1.png";
 import "./styles.css";
 import NavItem from "../NavItem";
 import NavButton from "../NavButton";
-import { Link, useParams } from "react-router-dom";
 import {
   faTachometerAlt,
   faUser,
@@ -15,58 +13,47 @@ import { GuestContext } from "../../Utils/GuestContext";
 
 const NavBar = () => {
   const { size } = useContext(SizeContext);
-  let { userID } = useParams();
   const { guest } = useContext(GuestContext);
 
-  const fullWidth = { width: "15em", minHeight: "100%", height: "100%" };
-  const reduced = { width: "7em", minHeight: "100%", height: "100%" };
-
   return (
-    <nav
-      id="NavBar"
-      className={
-        "navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary mt-1"
-      }
-      style={size ? reduced : fullWidth}
-    >
-      <div className="container-fluid d-flex flex-column p-0">
-        <Link
-          className="navbar-brand text-justify d-flex justify-content-center align-items-center sidebar-brand m-0"
-          to={guest ? `/guest/statistics` : `/user/${userID}/statistics`}
-        >
-          <div className="sidebar-brand-icon rotate-n-0">
-            <img id="iconSup" src={TecLogo} alt="" />
-          </div>
-          {size ? null : (
-            <div className="sidebar-brand-text mx-3 font-weight-bold">
-              <span>GPI</span>
-            </div>
-          )}
-        </Link>
-        <hr className="sidebar-divider my-0" />
-        <ul className="nav navbar-nav text-light text-left pl-0 mt-3 justify-content-start">
-          <NavItem
-            id="statistics"
-            icon={faTachometerAlt}
-            title="Estadisticas"
-          />
-          <NavItem
-            guest={guest ? true : false}
-            id="me"
-            icon={faUser}
-            title="Perfil"
-          />
-          <NavItem id="projects" icon={faTable} title="Proyectos" />
-          <NavItem
-            guest={guest ? true : false}
-            id="create"
-            icon={faEdit}
-            title="Gestor de Proyectos"
-          />
-        </ul>
+    <div className={`d-flex flex-column`} id="Navbar__Container">
+      <span className="mt-2 w-100 justify-content-center d-flex z-depth-3 position-relative">
         <NavButton />
-      </div>
-    </nav>
+      </span>
+
+      <nav
+        id="NavBar"
+        className={
+          "navbar navbar-expand-lg navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary h-100"
+        }
+      >
+        <div
+          className="container-fluid d-flex h-100 flex-column p-0 collapse navbar-collapse h-100"
+          id="navbarSupportedContent"
+        >
+          <ul className="nav navbar-nav h-75 text-light text-left pl-0 mt-3 justify-content-around d-flex flex-column">
+            <NavItem
+              id="statistics"
+              icon={faTachometerAlt}
+              title="Estadisticas"
+            />
+            <NavItem
+              guest={guest ? true : false}
+              id="me"
+              icon={faUser}
+              title="Perfil"
+            />
+            <NavItem id="projects" icon={faTable} title="Proyectos" />
+            <NavItem
+              guest={guest ? true : false}
+              id="create"
+              icon={faEdit}
+              title="Gestor de Proyectos"
+            />
+          </ul>
+        </div>
+      </nav>
+    </div>
   );
 };
 

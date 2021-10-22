@@ -25,19 +25,14 @@ const NavItem = (props) => {
       <Link
         id={props.id}
         className={
-          (size ? reducedNav : "") +
+          reducedNav +
           (page === `${props.id}` ? styleSelected : styleUnSelected)
         }
         style={page === `${props.id}` ? {} : { color: "rgba(255,255,255,.5)" }}
         to={!userID ? `/guest/${props.id}` : `/user/${userID}/${props.id}`}
       >
-        {props.icon ? (
-          <FontAwesomeIcon
-            className={size ? "text-align-center" : ""}
-            icon={props.icon}
-          />
-        ) : null}
-        <span className={size ? "h6" : "pl-2 h5"}>{props.title}</span>
+        {props.icon ? <FontAwesomeIcon icon={props.icon} /> : null}
+        <span className={"h6"}>{props.title}</span>
       </Link>
       {props.children}
     </li>

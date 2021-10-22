@@ -29,9 +29,9 @@ const CustomDropdown = ({ logout, suggestionPage, userPage }) => {
   }
   return (
     <>
-      <Dropdown className="bg-white">
+      <Dropdown className="bg-white m-0 p-0" style={{ position: "relative" }}>
         <Dropdown.Toggle as={CustomToggle}>
-          <span className="d-none d-lg-inline text-gray-600 small">
+          <span className="d-none d-md-inline d-lg-inline text-gray-600 small">
             {userFullName || "Invitado"}
           </span>
           <img
