@@ -6,9 +6,8 @@ import { ProjectContext } from "../../Utils/ProjectContext";
 
 const NavItem = (props) => {
   let { userID, page } = useParams();
-  const { size } = useContext(SizeContext);
   const { setProject } = useContext(ProjectContext);
-  const styleSelected = "nav-link active font-weight-bold";
+  const styleSelected = "nav-link active ";
   const styleUnSelected = "nav-link";
   const reducedNav =
     "d-flex flex-column justify-content-center align-items-center ";
@@ -32,7 +31,11 @@ const NavItem = (props) => {
         to={!userID ? `/guest/${props.id}` : `/user/${userID}/${props.id}`}
       >
         {props.icon ? <FontAwesomeIcon icon={props.icon} /> : null}
-        <span className={"h6"}>{props.title}</span>
+        <span
+          className={"h6 " + (page === `${props.id}` ? "font-weight-bold" : "")}
+        >
+          {props.title}
+        </span>
       </Link>
       {props.children}
     </li>

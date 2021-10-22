@@ -31,7 +31,7 @@ const NavBar = () => {
           className="container-fluid d-flex h-100 flex-column p-0 collapse navbar-collapse h-100"
           id="navbarSupportedContent"
         >
-          <ul className="nav navbar-nav h-75 text-light text-left pl-0 mt-3 justify-content-around d-flex flex-column">
+          <ul className="nav navbar-nav h-75 text-left pl-0 mt-3 justify-content-around d-flex flex-column">
             <NavItem
               id="statistics"
               icon={faTachometerAlt}

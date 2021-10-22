@@ -18,8 +18,8 @@ const PageFrame = () => {
   return (
     <div className="d-flex w-100 h-100 overflow-hidden">
       <SizeContext.Provider value={sizeValue}>
-        <div className="row d-flex flex-column w-100 h-100 p-0 m-0">
-          <div
+        <div className="row d-flex w-100 flex-column h-100 p-0 m-0">
+          <span
             id="Navbar__Container"
             className={
               "m-0 position-relative h-100 " +
@@ -27,8 +27,8 @@ const PageFrame = () => {
             }
           >
             <NavBar />
-          </div>
-          <span
+          </span>
+          <div
             id="page-container"
             className={
               "bg-white pt-0 m-0 h-100 p-0 " +
@@ -73,7 +73,7 @@ const PageFrame = () => {
                 </Route>
               </Switch>
             </div>
-          </span>
+          </div>
         </div>
       </SizeContext.Provider>
     </div>
