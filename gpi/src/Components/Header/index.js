@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 import { UserContext } from "../../Utils/UserContext";
 import { Link } from "react-router-dom";
 import NavButton from "../NavButton";
@@ -6,15 +7,25 @@ import CustomDropdown from "../CustomDropdown";
 import "./styles.css";
 import { GuestContext } from "../../Utils/GuestContext";
 import { SizeContext } from "../../Utils/SizeContext";
+import { Dropdown } from "react-bootstrap";
 
 function Header() {
   const { setUser } = useContext(UserContext);
   const { setGuest } = useContext(GuestContext);
-  const { size } = useContext(SizeContext);
+  const { size, setSize } = useContext(SizeContext);
+  const isMobile = useMediaQuery({ query: `(max-width: 1200px)` });
+
+  useEffect(() => {
+    if (isMobile) {
+      setSize(true);
+      console.log("mediakey in use");
+    }
+    console.log(size);
+  }, [isMobile]);
 
   function RenderLogout() {
     return (
-      <div className="ml-auto d-block btn p-0 rounded">
+      <Dropdown.Item className="ml-auto d-block btn p-0 rounded">
         <Link
           className="w-100 dropdown-item m-0 rounded-lg"
           onClick={handleLogout}
@@ -22,27 +33,27 @@ function Header() {
         >
           Logout
         </Link>
-      </div>
+      </Dropdown.Item>
     );
   }
 
   function RenderUser() {
     return (
-      <div className="ml-auto d-block btn  p-0 rounded rounded-bottom-lg">
+      <Dropdown.Item className="ml-auto d-block btn  p-0 rounded rounded-bottom-lg">
         <Link className="w-100 dropdown-item m-0 rounded-lg" to={`me`}>
           Perfil
         </Link>
-      </div>
+      </Dropdown.Item>
     );
   }
 
   function RenderSuggestion() {
     return (
-      <div className="ml-auto d-block btn  p-0 rounded rounded-bottom-lg">
+      <Dropdown.Item className="ml-auto d-block btn  p-0 rounded rounded-bottom-lg">
         <Link className="w-100 dropdown-item m-0 rounded-lg" to={`Suggestions`}>
           Sugerencias
         </Link>
-      </div>
+      </Dropdown.Item>
     );
   }
 
