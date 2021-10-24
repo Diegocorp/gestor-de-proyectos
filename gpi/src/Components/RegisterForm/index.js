@@ -44,7 +44,7 @@ const RegisterForm = (props) => {
 
   return (
     <div className="col-lg-7">
-      <div className="p-5">
+      <div className="p-4">
         <div className="text-center">
           <h4 className="text-dark mb-4">Registro</h4>
         </div>

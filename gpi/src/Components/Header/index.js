@@ -18,10 +18,8 @@ function Header() {
   useEffect(() => {
     if (isMobile) {
       setSize(true);
-      console.log("mediakey in use");
     }
-    console.log(size);
-  }, [isMobile]);
+  }, [isMobile, setSize]);
 
   function RenderLogout() {
     return (

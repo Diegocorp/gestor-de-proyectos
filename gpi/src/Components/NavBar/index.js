@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from "react";
-import { SizeContext } from "../../Utils/SizeContext";
+import React, { useContext } from "react";
 import "./styles.css";
 import NavItem from "../NavItem";
 import NavButton from "../NavButton";
@@ -12,7 +11,6 @@ import {
 import { GuestContext } from "../../Utils/GuestContext";
 
 const NavBar = () => {
-  const { size } = useContext(SizeContext);
   const { guest } = useContext(GuestContext);
 
   return (

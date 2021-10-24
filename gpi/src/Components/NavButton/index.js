@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { SizeContext } from "../../Utils/SizeContext";
-import { Link } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faBars } from "@fortawesome/free-solid-svg-icons";

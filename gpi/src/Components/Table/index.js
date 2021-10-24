@@ -29,7 +29,7 @@ function GlobalFilter({
       <div className="input-group input-group mb-3">
         <div className="input-group-prepend form-group">
           <span
-            className="input-group-text bg-transparent border-white"
+            className="input-group-text pl-0 pr-2 bg-transparent border-white"
             id="inputGroup-sizing-sm"
           >
             Buscar:
@@ -45,7 +45,7 @@ function GlobalFilter({
             setValue(e.target.value);
             onChange(e.target.value);
           }}
-          placeholder={`${count} records...`}
+          placeholder={`${count} registros...`}
           style={{
             fontSize: "1.1rem",
             border: "0",
@@ -59,7 +59,7 @@ function GlobalFilter({
 function CreatorFilter({ setToggler, toggle }) {
   return (
     <span className="d-flex">
-      <div className=" mb-3 mr-3">
+      <div className=" mb-3">
         <div className="">
           <span
             className={`btn btn-outline-primary text-capitalize ${
@@ -175,13 +175,7 @@ const CustomTable = ({
       {
         Header: "Proyecto",
         accessor: "proyectName",
-        Cell: (row) => (
-          <div
-            style={{ textAlign: "left", maxWidth: "13em", minWidth: "13em" }}
-          >
-            {row.value}
-          </div>
-        ),
+        Cell: (row) => <div style={{ textAlign: "left" }}>{row.value}</div>,
       },
       {
         Header: "Fecha De Inicio",
@@ -194,9 +188,7 @@ const CustomTable = ({
       {
         Header: "Empresa",
         accessor: "enterpriseProject",
-        Cell: (row) => (
-          <div style={{ maxWidth: "10em", minWidth: "10em" }}>{row.value}</div>
-        ),
+        Cell: (row) => <div>{row.value}</div>,
       },
       {
         Header: "Objetivo",
@@ -255,15 +247,14 @@ const CustomTable = ({
 
   return (
     <div
-      id="table__responsive"
-      className="table-responsive table h-100"
-      style={{ paddingBottom: "4em", overflowX: "scroll" }}
+      className="table-responsive h-100 w-100 d-flex flex-column align-items-center"
+      style={{ paddingBottom: "4vh", overflowX: "scroll" }}
     >
-      <span className="d-flex justify-content-sm-between">
-        <div className="pagination">
+      <div className="d-flex w-100 flex-column flex-lg-row justify-content-lg-between">
+        <div className="pagination mb-2 mb-lg-0">
           <span className="pt-2">Mostrar </span>
           <select
-            style={{ margin: "0 .5em", width: "4em" }}
+            style={{ margin: "0 .5em" }}
             className="custom-select border border-primary"
             value={pageSize}
             onChange={(e) => {
@@ -284,13 +275,16 @@ const CustomTable = ({
           setGlobalFilter={setGlobalFilter}
         />
         {userID ? (
-          <CreatorFilter
-            setToggler={setToggleUserProjects}
-            toggle={toggleUserProjects}
-          />
+          <div className=" w-sm-100 w-md-100 d-flex justify-content-center">
+            <CreatorFilter
+              setToggler={setToggleUserProjects}
+              toggle={toggleUserProjects}
+            />
+          </div>
         ) : null}
-      </span>
+      </div>
       <Table
+        responsive
         {...getTableProps()}
         className="display table-hover table table-striped table-bordered "
       >

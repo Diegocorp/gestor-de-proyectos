@@ -1,9 +1,11 @@
 .App {
   text-align: center;
+  overflow: auto;
 }
 
-html, body {
-  overflow:auto
+html,
+body {
+  overflow: auto;
 }
 
 .App-logo {
@@ -32,14 +34,14 @@ html, body {
   color: #61dafb;
 }
 
-.guest-box{
-width: 100%;
-display: flex;
-justify-content: center !important;
-align-items: center !important;
+.guest-box {
+  width: 100%;
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
-.section-guest{
-width: 100%;
-margin-bottom: 3rem;
+.section-guest {
+  width: 100%;
+  margin-bottom: 3rem;
 }

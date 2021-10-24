@@ -36,7 +36,11 @@ const PageFrame = () => {
             }
           >
             <Header />
-            <div id="page-container__div" style={{ height: "100vh" }}>
+            <div
+              id="page-container__div"
+              className="mt-3"
+              style={{ height: "100vh" }}
+            >
               <Switch>
                 <Route path={`/user/:userID/me`}>
                   <UserPage />
