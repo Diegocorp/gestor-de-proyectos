@@ -92,7 +92,7 @@ const AddTeacher = ({
         <div className="col-sm">
           <div className="form-group">
             <label htmlFor="city">
-              <strong>Nombre del Maestro Participante</strong>
+              <strong>Maestro Participante</strong>
               <br />
             </label>
             <input
@@ -145,9 +145,9 @@ const AddTeacher = ({
             />
           </div>
         </div>
-        <div className="col-sm">
-          <div className="form-group">
-            <div className="input-group-btn" style={{ marginTop: "1.5em" }}>
+        <div className="col-sm pt-0 pt-md-2" style={{ maxWidth: "50px" }}>
+          <div className="form-group h-100">
+            <div className="input-group-btn h-100 mb-5 mb-md-0 mt-md-4">
               {guest ? null : (
                 <button
                   className={trigger ? classAdd : classRemove}

@@ -321,7 +321,7 @@ const CustomTable = ({
           })}
         </tbody>
       </Table>
-      <div className="mb-4">
+      <div className="mt-4 mt-md-0 mb-4">
         <button
           className="btn btn-sm rounded-sm btn-outline-primary"
           onClick={() => gotoPage(0)}

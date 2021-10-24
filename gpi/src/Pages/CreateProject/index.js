@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useMediaQuery } from "react-responsive";
 import "./styles.css";
 import apis from "../../API";
 import AddStudent from "../../Components/AddStudent";
@@ -17,6 +18,7 @@ const CreateProject = ({ title, edit }) => {
   const { user } = useContext(UserContext);
   const { project } = useContext(ProjectContext);
   const { guest } = useContext(GuestContext);
+  const isMobile = useMediaQuery({ query: `(max-width: 750px)` });
   const [dataObject, setDataObject] = useState({
     proyectName: "",
     releaseDate: "",
@@ -304,7 +306,7 @@ const CreateProject = ({ title, edit }) => {
               </p>
             </div>
             <div className="card-body">
-              <div className="form-row">
+              <div className="form-row flex-column flex-md-row">
                 <div className="col">
                   <div className="form-group">
                     <label htmlFor="username">
@@ -341,7 +343,7 @@ const CreateProject = ({ title, edit }) => {
                   </div>
                 </div>
               </div>
-              <div className="form-row">
+              <div className="form-row flex-column flex-md-row">
                 <div className="col">
                   <div className="form-group">
                     <label htmlFor="first_name">
@@ -381,7 +383,7 @@ const CreateProject = ({ title, edit }) => {
                   </div>
                 </div>
               </div>
-              <div id="selectArea" className="form-row">
+              <div id="selectArea" className="form-row flex-column flex-md-row">
                 <div className="col">
                   <div className="form-group">
                     <label htmlFor="first_name">
@@ -516,7 +518,7 @@ const CreateProject = ({ title, edit }) => {
               </p>
             </div>
             <div className="card-body">
-              <div className="form-row">
+              <div className="form-row flex-column flex-md-row">
                 <div className="col">
                   <div className="form-group">
                     <label htmlFor="username">
@@ -553,7 +555,7 @@ const CreateProject = ({ title, edit }) => {
                   </div>
                 </div>
               </div>
-              <div className="form-row">
+              <div className="form-row flex-column flex-md-row">
                 <div className="col">
                   <div className="form-group">
                     <label htmlFor="first_name">
@@ -687,7 +689,10 @@ const CreateProject = ({ title, edit }) => {
             </div>
           </div>
           {guest ? (
-            <div className="form-group d-flex justify-content-around mt-4">
+            <div
+              className="form-group mt-4 d-flex w-100 flex-column flex-md-row justify-content-center justify-content-md-around"
+              style={isMobile ? { height: "8vh" } : null}
+            >
               {project ? (
                 <button
                   className="btn btn-outline-primary text-capitalize font-weight-bold"
@@ -701,7 +706,10 @@ const CreateProject = ({ title, edit }) => {
               )}
             </div>
           ) : (
-            <div className="form-group d-flex justify-content-around mt-4">
+            <div
+              className="form-group mt-4 d-flex w-100 flex-column flex-md-row justify-content-around justify-content-md-around"
+              style={isMobile ? { height: "20vh" } : null}
+            >
               {project.creatorID ? (
                 project.creatorID.toString() ===
                 user.employeeNumber.toString() ? (

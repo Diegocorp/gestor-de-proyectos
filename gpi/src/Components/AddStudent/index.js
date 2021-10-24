@@ -77,10 +77,10 @@ const AddStudent = ({
   return (
     <div className="entry-student input-group">
       <div className="form-row" style={{ width: "100%" }}>
-        <div className="col">
+        <div className="col-sm">
           <div className="form-group">
             <label htmlFor="city">
-              <strong>Nombre del Alumno Participante</strong>
+              <strong>Alumno Participante</strong>
             </label>
             <input
               id="studentName"
@@ -95,7 +95,7 @@ const AddStudent = ({
             />
           </div>
         </div>
-        <div className="col">
+        <div className="col-sm">
           <div className="form-group">
             <label htmlFor="city">
               <strong>Número de Control</strong>
@@ -113,9 +113,9 @@ const AddStudent = ({
             />
           </div>
         </div>
-        <div className="col">
-          <div className="form-group">
-            <div className="input-group-btn" style={{ marginTop: "1.5em" }}>
+        <div className="col-sm pt-0 pt-md-2" style={{ maxWidth: "50px" }}>
+          <div className="form-group h-100">
+            <div className="input-group-btn h-100 mb-5 mb-md-0 mt-md-4">
               {guest ? null : trigger ? (
                 <button
                   className={classAdd}

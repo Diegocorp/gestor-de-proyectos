@@ -1,8 +1,6 @@
 #fileBtnDrop {
   display: inline-flex;
   justify-content: space-between;
-  width: 35%;
-  max-width: 35%;
 }
 
 #file__span-container > button > span {

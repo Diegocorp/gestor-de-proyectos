@@ -73,11 +73,11 @@ const DocumentButton = ({
         onChange={fileChanged}
         files={documentUploads[`${identifier}`]}
       />
-      <span id="file__span-container">
+      <span id="file__span-container" className="row">
         <button
           id="fileBtnDrop"
           type="button"
-          className="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
+          className="btn btn-outline-primary dropdown-toggle dropdown-toggle-split col-12 col-md-9 col-lg-6"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
