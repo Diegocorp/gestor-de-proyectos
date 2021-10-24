@@ -69,14 +69,13 @@ const UserPage = (props) => {
 
   return (
     <div className="container-fluid text-left">
-      <h3 className="text-dark mb-4">Perfil</h3>
-      <div className="row mb-3">
-        <form
-          className="needs-validation w-100 d-flex"
-          noValidate
-          onSubmit={handleSubmit}
-        >
-          <div className="col-lg-4">
+      <h3 className="text-dark">
+        <strong>Perfil</strong>{" "}
+      </h3>
+      <form className="needs-validation" noValidate onSubmit={handleSubmit}>
+        <div className="row justify-content-md-center">
+          {/* User image */}
+          <div className="col-lg-8">
             <div className="card shadow mb-3">
               <div className="card-header py-3">
                 <p className="text-primary m-0 font-weight-bold">
@@ -86,20 +85,23 @@ const UserPage = (props) => {
               <div className="card-body text-center shadow">
                 <img
                   id="preview"
-                  className="rounded-circle mb-3 mt-4"
+                  className="rounded border border-dark mb-3 mt-4 img-fluid"
                   src={user.imageURL}
                   width="160"
                   height="160"
                   alt="user profile"
                 />
-                <div className="mb-3">
+                <div className="form-group mb-3">
                   <input type="file" name="image" onChange={handleFileChange} />
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        {/* User configuration */}
+        <div className="row justify-content-md-center">
           <div className="col-lg-8">
-            <div className="row">
+            <div className="row ">
               <div className="col">
                 <div className="card shadow mb-3">
                   <div className="card-header py-3">
@@ -109,7 +111,7 @@ const UserPage = (props) => {
                   </div>
                   <div className="card-body">
                     <div className="form-row">
-                      <div className="col">
+                      <div className="col-xs-12 col-md-6">
                         <div className="form-group">
                           <label htmlFor="username">
                             <strong>Nombre de Usuario</strong>
@@ -126,7 +128,7 @@ const UserPage = (props) => {
                           />
                         </div>
                       </div>
-                      <div className="col">
+                      <div className="col-xs-12 col-md-6">
                         <div className="form-group">
                           <label htmlFor="email">
                             <strong>Correo Electronico</strong>
@@ -145,7 +147,7 @@ const UserPage = (props) => {
                       </div>
                     </div>
                     <div className="form-row">
-                      <div className="col">
+                      <div className="col-xs-12 col-md-6">
                         <div className="form-group">
                           <label htmlFor="first_name">
                             <strong>Nombre(s)</strong>
@@ -162,7 +164,7 @@ const UserPage = (props) => {
                           />
                         </div>
                       </div>
-                      <div className="col">
+                      <div className="col-xs-12 col-md-6">
                         <div className="form-group">
                           <label htmlFor="last_name">
                             <strong>Apellido(s)</strong>
@@ -217,7 +219,7 @@ const UserPage = (props) => {
                         </div>
                       </div>
                     </div>
-                    <div className="form-group">
+                    <div className="form-group justify-content-md-center">
                       <button
                         id="profileBtn"
                         className="btn btn-primary text-capitalize font-weight-bold"
@@ -234,8 +236,8 @@ const UserPage = (props) => {
               </div>
             </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
       <div className="card shadow mb-5"></div>
     </div>
   );
