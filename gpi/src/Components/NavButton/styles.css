@@ -16,30 +16,6 @@
 #burger {
   color: #0275d8;
 }
-/* 
-.row [class*="d-"] {
-  transition: visible 0.5s ease-in-out;
-} */
-
-/* Menu sliding styles */
-
-/* header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 15
-}
-
-header #menu {
-    display: block;
-    height: 58px;
-    padding: 0 1.95em;
-}
-
-header #menu a {
-    position: relative;
-    z-index: 3;
-} */
 
 #Navbar__Container .open {
   transition: -webkit-transform 0.5s ease;

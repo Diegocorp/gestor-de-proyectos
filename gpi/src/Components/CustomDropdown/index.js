@@ -41,10 +41,18 @@ const CustomDropdown = ({ logout, suggestionPage, userPage }) => {
             alt="profile"
           />
         </Dropdown.Toggle>
-        <Dropdown.Menu className="rounded p-0 mt-2">
-          {guest ? null : userPage}
-          {suggestionPage}
-          {logout}
+        <Dropdown.Menu className="rounded p-0 mt-2 ">
+          {guest ? null : (
+            <Dropdown.Item>
+              <div className="w-100 text-center">{userPage}</div>
+            </Dropdown.Item>
+          )}
+          <Dropdown.Item>
+            <div className="w-100 text-center">{suggestionPage}</div>
+          </Dropdown.Item>
+          <Dropdown.Item>
+            <div className="w-100 text-center">{logout}</div>
+          </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
       {""}

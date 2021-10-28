@@ -10,12 +10,12 @@ const NavItem = (props) => {
   const isMobile = useMediaQuery({ query: `(max-width: 1200px)` });
   const styleSelected = "nav-link active ";
   const styleUnSelected = "nav-link";
-  const reducedNav =
-    "d-flex flex-column justify-content-center align-items-center ";
+  const Nav =
+    "d-flex flex-column justify-content-center text-center align-items-center text-decoration-none ";
 
   return (
     <li
-      className="nav-item mt-2 "
+      className="nav-item d-flex flex-column align-items-center justify-content-center "
       role="presentation"
       style={props.guest ? { display: "none" } : null}
       onClick={() => {
@@ -25,7 +25,7 @@ const NavItem = (props) => {
       <Link
         id={props.id}
         className={
-          reducedNav +
+          Nav +
           (isMobile
             ? ""
             : page === `${props.id}`

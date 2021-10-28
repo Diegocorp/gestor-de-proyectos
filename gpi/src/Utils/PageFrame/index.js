@@ -31,7 +31,7 @@ const PageFrame = () => {
           <div
             id="page-container"
             className={
-              "bg-white pt-0 m-0 h-100 p-0 " +
+              "bg-white w-100 pt-0 m-0 h-100 p-0 " +
               (size ? "page__widen" : "page__shrink")
             }
           >

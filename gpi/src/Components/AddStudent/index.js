@@ -79,10 +79,11 @@ const AddStudent = ({
       <div className="form-row" style={{ width: "100%" }}>
         <div className="col-sm">
           <div className="form-group">
-            <label htmlFor="city">
+            <label htmlFor="studentName">
               <strong>Alumno Participante</strong>
             </label>
             <input
+              name="studentName"
               id="studentName"
               value={textFields.studentName}
               onChange={handleType}
@@ -91,16 +92,17 @@ const AddStudent = ({
               type="text"
               placeholder="Nombre del alumno"
               readOnly={detectEnable()}
-              name="city"
             />
           </div>
         </div>
         <div className="col-sm">
           <div className="form-group">
-            <label htmlFor="city">
+            <label htmlFor="studentID">
               <strong>Número de Control</strong>
             </label>
             <input
+              name="studentID"
+              pattern="[0-9]+"
               id="studentID"
               value={textFields.studentID}
               onChange={handleType}
@@ -109,7 +111,6 @@ const AddStudent = ({
               type="text"
               placeholder="Número de control"
               readOnly={detectEnable()}
-              name="city"
             />
           </div>
         </div>

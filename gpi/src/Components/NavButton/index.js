@@ -36,13 +36,13 @@ const NavButton = ({ hamburger }) => {
 
   return (
     <div
-      className="text-center d-md-inline text-white align-self-center"
+      className="text-center d-md-inline align-self-center"
       onClick={onClick}
     >
       {hamburger ? (
         isMobile ? (
           <>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="navbar navbar-expand-lg navbar-light m-0 p-0">
               <Dropdown
                 className="bg-white m-0 p-0"
                 style={{ position: "relative" }}
@@ -54,7 +54,7 @@ const NavButton = ({ hamburger }) => {
                     </span>
                   </div>
                 </Dropdown.Toggle>
-                <Dropdown.Menu className="rounded p-0 mt-2">
+                <Dropdown.Menu className="rounded p-0">
                   <Dropdown.Item>
                     <NavItem id="statistics" title="Estadisticas" />
                   </Dropdown.Item>
@@ -84,7 +84,10 @@ const NavButton = ({ hamburger }) => {
           </div>
         )
       ) : (
-        <div id="collapseBtn" className="btn btn-block rounded-circle border-0">
+        <div
+          id="collapseBtn"
+          className="btn btn-block rounded-circle border-0 mt-2"
+        >
           <span className="nav-link p-0 m-0">
             <FontAwesomeIcon id="arrowIcon" icon={faAngleLeft} />
           </span>

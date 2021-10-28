@@ -28,15 +28,16 @@
 }
 
 .bar__open {
-  width: 8%;
-  max-width: 8%;
-  min-width: 8%;
+  width: 8.5%;
+  max-width: 8.5%;
+  min-width: 8.5%;
   transition: width 1s, min-width 1s, max-width 1s;
   -webkit-transition: width 1s, min-width 1s, max-width 1s;
 }
 
 .page__widen {
   width: auto;
+  max-width: 100%;
   min-width: 100%;
   transition: width 1s, min-width 1s, max-width 1s;
   -webkit-transition: width 1s, min-width 1s, max-width 1s;

@@ -25,7 +25,7 @@ function Header() {
     return (
       <Dropdown.Item className="ml-auto d-block btn p-0 rounded">
         <Link
-          className="w-100 dropdown-item m-0 rounded-lg"
+          className="w-100 dropdown-item m-0 rounded-lg text-primary"
           onClick={handleLogout}
           to="/login"
         >
@@ -38,7 +38,10 @@ function Header() {
   function RenderUser() {
     return (
       <Dropdown.Item className="ml-auto d-block btn  p-0 rounded rounded-bottom-lg">
-        <Link className="w-100 dropdown-item m-0 rounded-lg" to={`me`}>
+        <Link
+          className="w-100 dropdown-item m-0 rounded-lg text-primary"
+          to={`me`}
+        >
           Perfil
         </Link>
       </Dropdown.Item>
@@ -48,7 +51,10 @@ function Header() {
   function RenderSuggestion() {
     return (
       <Dropdown.Item className="ml-auto d-block btn  p-0 rounded rounded-bottom-lg">
-        <Link className="w-100 dropdown-item m-0 rounded-lg" to={`Suggestions`}>
+        <Link
+          className="w-100 dropdown-item m-0 rounded-lg text-primary"
+          to={`Suggestions`}
+        >
           Sugerencias
         </Link>
       </Dropdown.Item>

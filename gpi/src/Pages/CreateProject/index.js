@@ -44,7 +44,6 @@ const CreateProject = ({ title, edit }) => {
   useEffect(() => {
     let pageItems = document.getElementById("projectID");
     let selectItems = document.querySelectorAll(".form-group > select");
-    // console.log(project);
     if (Object.keys(project).length > 0) {
       setDataObject(project);
       if (!project.creatorID) {
@@ -55,13 +54,6 @@ const CreateProject = ({ title, edit }) => {
           statusProject: "Cancelado",
         }));
       }
-      // if (dataObject.studentMember) {
-      //   setAddStudent(
-      //     Object.keys(dataObject.studentMember).map((key) => [
-      //       dataObject.studentMember[key],
-      //     ])
-      //   );
-      // }
       if (project.studentMember) {
         setAddStudent(
           Object.keys(project.studentMember).map((key) => [
@@ -69,13 +61,6 @@ const CreateProject = ({ title, edit }) => {
           ])
         );
       }
-      // if (dataObject.teacherMember) {
-      //   setAddTeacher(
-      //     Object.keys(dataObject.teacherMember).map((key) => [
-      //       dataObject.teacherMember[key],
-      //     ])
-      //   );
-      // }
       if (project.teacherMember) {
         setAddTeacher(
           Object.keys(project.teacherMember).map((key) => [
@@ -143,7 +128,8 @@ const CreateProject = ({ title, edit }) => {
     setAddTeacher(addTeacher.filter((item) => item !== key));
   }
 
-  const onSubmit = async () => {
+  const onSubmit = async (event) => {
+    event.preventDefault();
     Object.keys(dataObject.studentMember)
       .map((value) => {
         if (
@@ -169,7 +155,6 @@ const CreateProject = ({ title, edit }) => {
 
     try {
       if (!edit) {
-        //console.log(dataObject);
         //project info upload to database then upload document
         apis
           .postProject(dataObject)
@@ -185,7 +170,7 @@ const CreateProject = ({ title, edit }) => {
             store.addNotification({
               title: "Proyecto registrado con exito",
               message:
-                "El proyecto se ha registrado con exito en la base de datos",
+                "El proyecto se ha registrado con exito en la base de datos.",
               type: "default",
               insert: "top",
               container: "top-right",
@@ -200,6 +185,19 @@ const CreateProject = ({ title, edit }) => {
           .catch((error) => {
             // handle error
             console.log(error);
+            store.addNotification({
+              title: "Falla en creación del proyecto",
+              message: "Falta llenar uno o más campos.",
+              type: "danger",
+              insert: "top",
+              container: "top-right",
+              animationIn: ["animate__animated", "animate__fadeIn"],
+              animationOut: ["animate__animated", "animate__fadeOut"],
+              dismiss: {
+                duration: 3500,
+                onScreen: true,
+              },
+            });
           });
       } else {
         await apis
@@ -229,6 +227,23 @@ const CreateProject = ({ title, edit }) => {
               message:
                 "El proyecto se ha actualizado con exito en la base de datos",
               type: "info",
+              insert: "top",
+              container: "top-right",
+              animationIn: ["animate__animated", "animate__fadeIn"],
+              animationOut: ["animate__animated", "animate__fadeOut"],
+              dismiss: {
+                duration: 3500,
+                onScreen: true,
+              },
+            });
+          })
+          .catch((error) => {
+            // handle error
+            console.log(error);
+            store.addNotification({
+              title: "Falla en la edición del proyecto",
+              message: "Falta llenar uno o más campos.",
+              type: "danger",
               insert: "top",
               container: "top-right",
               animationIn: ["animate__animated", "animate__fadeIn"],
@@ -297,7 +312,7 @@ const CreateProject = ({ title, edit }) => {
         </h3>
       </div>
       <div className="row" />
-      <form id="projectID" className={`needs-validation`} noValidate>
+      <form id="projectID" className={`needs-validation`} onSubmit={onSubmit}>
         <div className="col-xl-12 offset-xl-0">
           <div className="card shadow mb-3">
             <div className="card-header py-3">
@@ -309,10 +324,11 @@ const CreateProject = ({ title, edit }) => {
               <div className="form-row flex-column flex-md-row">
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="username">
+                    <label htmlFor="proyectname">
                       <strong>Nombre del proyecto</strong>
                     </label>
                     <input
+                      name="proyectname"
                       id="proyectName"
                       value={dataObject.proyectName}
                       onChange={handleType}
@@ -325,10 +341,11 @@ const CreateProject = ({ title, edit }) => {
                 </div>
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="email">
+                    <label htmlFor="releaseDate">
                       <strong>Fecha de liberacion</strong>
                     </label>
                     <input
+                      name="releaseDate"
                       id="releaseDate"
                       value={dataObject.releaseDate}
                       onChange={handleType}
@@ -346,10 +363,11 @@ const CreateProject = ({ title, edit }) => {
               <div className="form-row flex-column flex-md-row">
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="first_name">
+                    <label htmlFor="startDate">
                       <strong>Periodo de Inicio</strong>
                     </label>
                     <input
+                      name="startDate"
                       id="startDate"
                       value={dataObject.startDate}
                       onChange={handleType}
@@ -365,10 +383,11 @@ const CreateProject = ({ title, edit }) => {
                 </div>
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="last_name">
+                    <label htmlFor="conclusionDate">
                       <strong>Periodo de conclusion</strong>
                     </label>
                     <input
+                      name="conclusionDate"
                       id="conclusionDate"
                       value={dataObject.conclusionDate}
                       onChange={handleType}
@@ -472,7 +491,6 @@ const CreateProject = ({ title, edit }) => {
                         id="projectComment"
                         value={dataObject.projectComment}
                         onChange={handleType}
-                        required={true}
                         className="border rounded form-control"
                         style={{
                           padding: "6px 12px",
@@ -521,10 +539,11 @@ const CreateProject = ({ title, edit }) => {
               <div className="form-row flex-column flex-md-row">
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="username">
+                    <label htmlFor="enterpriseProject">
                       <strong>Nombre de la empresa</strong>
                     </label>
                     <input
+                      name="enterpriseProject"
                       id="enterpriseProject"
                       value={dataObject.enterpriseProject}
                       onChange={handleType}
@@ -532,17 +551,17 @@ const CreateProject = ({ title, edit }) => {
                       className="form-control"
                       type="text"
                       placeholder="Nombre de la empresa"
-                      name="username"
                     />
                   </div>
                 </div>
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="email">
+                    <label htmlFor="enterpriseContact">
                       <strong>Correo electronico de la empresa</strong>
                       <br />
                     </label>
                     <input
+                      name="enterpriseContact"
                       id="enterpriseContact"
                       value={dataObject.enterpriseContact}
                       onChange={handleType}
@@ -550,7 +569,6 @@ const CreateProject = ({ title, edit }) => {
                       className="form-control"
                       type="email"
                       placeholder="ejemplo@ejemplo.com"
-                      name="email"
                     />
                   </div>
                 </div>
@@ -558,10 +576,11 @@ const CreateProject = ({ title, edit }) => {
               <div className="form-row flex-column flex-md-row">
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="first_name">
+                    <label htmlFor="firstNameContact">
                       <strong>Nombre(s)</strong>
                     </label>
                     <input
+                      name="firstNameContact"
                       id="firstNameContact"
                       value={dataObject.firstNameContact}
                       onChange={handleType}
@@ -569,16 +588,16 @@ const CreateProject = ({ title, edit }) => {
                       className="form-control"
                       type="text"
                       placeholder="Juan"
-                      name="first_name"
                     />
                   </div>
                 </div>
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="last_name">
+                    <label htmlFor="lastNameContact">
                       <strong>Apellido(s)</strong>
                     </label>
                     <input
+                      name="lastNameContact"
                       id="lastNameContact"
                       value={dataObject.lastNameContact}
                       onChange={handleType}
@@ -586,7 +605,6 @@ const CreateProject = ({ title, edit }) => {
                       className="form-control"
                       type="text"
                       placeholder="Perez"
-                      name="last_name"
                     />
                   </div>
                 </div>
@@ -716,8 +734,7 @@ const CreateProject = ({ title, edit }) => {
                   <button
                     id="proyectBtn"
                     className="btn btn-outline-primary text-capitalize font-weight-bold"
-                    type="button"
-                    onClick={onSubmit}
+                    type="submit"
                   >
                     Guardar datos
                   </button>
@@ -728,8 +745,7 @@ const CreateProject = ({ title, edit }) => {
                 <button
                   id="proyectBtn"
                   className="btn btn-outline-primary text-capitalize font-weight-bold"
-                  type="button"
-                  onClick={onSubmit}
+                  type="submit"
                 >
                   Guardar datos
                 </button>

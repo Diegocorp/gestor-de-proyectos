@@ -91,11 +91,12 @@ const AddTeacher = ({
       <div className="form-row" style={{ width: "100%" }}>
         <div className="col-sm">
           <div className="form-group">
-            <label htmlFor="city">
+            <label htmlFor="nameTeacher">
               <strong>Maestro Participante</strong>
               <br />
             </label>
             <input
+              name="nameTeacher"
               id="nameTeacher"
               value={textFields.nameTeacher}
               onChange={handleType}
@@ -103,36 +104,37 @@ const AddTeacher = ({
               className="border rounded form-control teacherName"
               type="text"
               placeholder="Nombre del maestro"
-              name="city"
               readOnly={detectEnable()}
             />
           </div>
         </div>
         <div className="col-sm">
           <div className="form-group">
-            <label htmlFor="city">
+            <label htmlFor="idTeacher">
               <strong>Numero de Empleado</strong>
             </label>
             <input
+              name="idTeacher"
               id="idTeacher"
+              pattern="[0-9]+"
               value={textFields.idTeacher}
               onChange={handleType}
               required={true}
               className="form-control teacherId"
               type="text"
               placeholder="Número de empleado"
-              name="city"
               readOnly={detectEnable()}
             />
           </div>
         </div>
         <div className="col-sm">
           <div className="form-group">
-            <label htmlFor="city">
+            <label htmlFor="subject">
               <strong>Materia del Maestro</strong>
               <br />
             </label>
             <input
+              name="subject"
               id="subject"
               value={textFields.subject}
               onChange={handleType}
@@ -140,7 +142,6 @@ const AddTeacher = ({
               className="border rounded form-control teacherSubject"
               type="text"
               placeholder="Materia"
-              name="city"
               readOnly={detectEnable()}
             />
           </div>

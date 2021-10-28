@@ -14,7 +14,7 @@ const NavBar = () => {
   const { guest } = useContext(GuestContext);
 
   return (
-    <div className={`d-flex flex-column`} id="Navbar__Container">
+    <div className={`d-flex flex-column h-100`} id="Navbar__Container">
       <span className="mt-2 w-100 justify-content-center d-flex z-depth-3 position-relative">
         <NavButton />
       </span>
