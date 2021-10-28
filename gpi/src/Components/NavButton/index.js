@@ -42,7 +42,7 @@ const NavButton = ({ hamburger }) => {
       {hamburger ? (
         isMobile ? (
           <>
-            <nav class="navbar navbar-expand-lg navbar-light m-0 p-0">
+            <nav className="navbar navbar-expand-lg navbar-light m-0 p-0">
               <Dropdown
                 className="bg-white m-0 p-0"
                 style={{ position: "relative" }}

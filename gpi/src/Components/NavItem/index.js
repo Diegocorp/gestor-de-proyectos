@@ -8,14 +8,14 @@ const NavItem = (props) => {
   let { userID, page } = useParams();
   const { setProject } = useContext(ProjectContext);
   const isMobile = useMediaQuery({ query: `(max-width: 1200px)` });
-  const styleSelected = "nav-link active ";
+  const styleSelected = "nav-link active font-weight-bold ";
   const styleUnSelected = "nav-link";
   const Nav =
     "d-flex flex-column justify-content-center text-center align-items-center text-decoration-none ";
 
   return (
     <li
-      className="nav-item d-flex flex-column align-items-center justify-content-center "
+      className="nav-item d-flex flex-column align-items-center justify-content-center h6 "
       role="presentation"
       style={props.guest ? { display: "none" } : null}
       onClick={() => {
@@ -42,11 +42,7 @@ const NavItem = (props) => {
         to={!userID ? `/guest/${props.id}` : `/user/${userID}/${props.id}`}
       >
         {props.icon ? <FontAwesomeIcon icon={props.icon} /> : null}
-        <span
-          className={"h6 " + (page === `${props.id}` ? "font-weight-bold" : "")}
-        >
-          {props.title}
-        </span>
+        {props.title}
       </Link>
       {props.children}
     </li>
